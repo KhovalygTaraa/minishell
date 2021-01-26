@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/20 16:39:49 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/01/26 12:38:55 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,27 @@
 
 int     main(int argc, char **argv, char **env)
 {
-    int     status;
-    char    *line;
+	char    *line;
+	t_main  main;
+	int     status;
+	pid_t	pid;
 
-    status = 1;
-    (void)argc;
-    (void)argv;
-    (void)env;
-    while (status)
-    {
-        ft_putstr_fd("sh> ", 1);
-        get_next_line(1, &line);
-        parser(line);
-        free(line);
-    }
-    // while (env[i])
-    // {
-    //     pwd = ft_strnstr(env[i], "PWD", 3);
-    //     if (pwd != NULL)
-    //         printf("%s\n", pwd + 4);
-    //     i++;
-    // }
-    return (0);
+	status = 1;
+	(void)argc;
+	(void)argv;
+	main.env = env;
+	while (status)
+	{
+		if ((pid = fork()) == 0)
+		{
+			ft_putstr_fd("sh> ", 1);
+			get_next_line(1, &line); // чтение
+			parser(line, &main); // парсинг
+			free(line);
+			executor(&main); // выполнение
+		}
+		else
+			wait(&status);
+	}
+	return (0);
 }

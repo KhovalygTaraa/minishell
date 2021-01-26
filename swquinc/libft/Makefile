@@ -6,7 +6,7 @@
 #    By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/01 17:06:30 by swquinc           #+#    #+#              #
-#    Updated: 2021/01/20 12:50:19 by swquinc          ###   ########.fr        #
+#    Updated: 2021/01/24 16:27:25 by swquinc          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ ft_lstadd_front.c ft_memset.c ft_memcpy.c ft_atof.c \
 ft_lstnew.c ft_substr.c ft_lstlast.c ft_split_upd.c \
 ft_line_malloc.c get_next_line.c ft_blstadd_front.c \
 ft_lstadd_back.c ft_blstadd_back.c ft_strjoin_free.c \
-ft_atod.c ft_blstnew.c 
+ft_atod.c ft_blstnew.c ft_strcmp.c 
 
 OBJ = $(SRC:.c=.o)
 
