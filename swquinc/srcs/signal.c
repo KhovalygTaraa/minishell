@@ -1,21 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_variable.c                                  :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 16:14:31 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/25 18:34:59 by swquinc          ###   ########.fr       */
+/*   Created: 2021/01/28 19:15:00 by swquinc           #+#    #+#             */
+/*   Updated: 2021/02/06 15:21:50 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <minishell.h>
 
-void	create_variable(t_main *main, t_cmd *cmd)
+void	ignore_squit(int code)
 {
-	(void)main;
-	(void)cmd;
-	printf("create variable");
-	exit(EXIT_SUCCESS);
+	(void)code;
+	write(1, "\b\b  \b\b", 6);
+}
+
+void	ignore_sint(int code)
+{
+	(void)code;
+	write(1, "\b\b  \b\b", 6);
+}
+
+void	quit_child(int code)
+{
+	(void)code;
+	kill(pid, SIGQUIT);
+	ft_putendl_fd("Quit: 3", 1);
+	error = 131;
+}
+
+void	kill_child(int code)
+{
+	(void)code;
+	kill(pid, SIGINT);
+	write(1, "\n", 1);
+	error = 130;
 }

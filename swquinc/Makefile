@@ -25,9 +25,9 @@ SRC_NAME		=	main.c \
 					exec_export.c \
 					exec_pwd.c \
 					exec_unset.c \
-					create_variable.c \
 					utils.c \
-					error_handler.c
+					error_handler.c \
+					signal.c
 
 SRC_DIR			=	srcs
 OBJ_DIR			=	obj

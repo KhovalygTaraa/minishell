@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/26 18:43:17 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/06 15:06:03 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,36 @@
 # define EXECVE 51 // возможно valgrind будет ругаться на утечку.
 # define STAT 52
 # define STAT_DIR 53
+# define CHDIR_ERROR 54
+# define HOME_NOT_SET 55
+# define PWD_ERROR 56
+# define EXPORT_ERROR 57
+# define UNSET_ERROR 58
+# define OPEN_ERROR 59
+
+pid_t			pid;
+int				error;
 
 typedef struct	s_cmd
 {
 	char		**cmd;
-	int			var;
 	int			pipe;
 	char		**red;
 }				t_cmd;
 
-typedef struct	s_var
-{
-	char		*name;
-	char		*value;
-}				t_var;
-
 typedef struct	s_main
 {
-	char		**env;
-	char		**path; //malloc parse_env
-	char		*pwd; //malloc parse_env
-	char		*home; // malloc parse_env
-	pid_t		pid;
-	t_list		*vars;
-	t_list		*cmds;
+	char		**env; // malloced -> main
+	char		**path; //malloced -> parse_env
+	char		*pwd; //malloced -> parse_env
+	char		*home; // malloced -> parse_env
+	int			exit; //  временная переменная, забыл для чего это
+	int			fildes[2]; // for pipe
+	int			is_stdout_taken; // for pipe
+	int			is_stdin_taken; // for pipe
+	int			stdout; // стандартный вывод нужно сохранить
+	int			stdin; // стандартный ввод нужно сохранить
+	int			relink_fd;
+	t_cmd		*cmd;
 }				t_main;
 #endif

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:49:30 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/24 16:40:13 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/01/31 20:01:35 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ char				**ft_split(char const *s, char c);
 char				**ft_split_upd(char const *s, char *str);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void				ft_putchar_fd(char c, int fd);
-void				ft_putstr_fd(char *c, int fd);
-void				ft_putendl_fd(char *c, int fd);
+void				ft_putchar_fd(const char c, int fd);
+void				ft_putstr_fd(const char *c, int fd);
+void				ft_putendl_fd(const char *c, int fd);
 void				ft_putnbr_fd(int n, int fd);
 int					get_next_line(int fd, char **line);
 

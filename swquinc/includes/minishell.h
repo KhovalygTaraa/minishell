@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/26 17:56:26 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/07 14:03:51 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@
 // read - считывает из файлового дескриптора и записывает n байт в буфер. В случае ошибки повторяет поведение open.
 // close - удаляет файловый дескрпитор. В случае ошибки повторяет поведение read.
 // fork - дублирует текущий процесс. Иными словами, создает дочерний процесс.
-// getcwd - записывает в буфер абсолютный путь к рабочей директории. В случае ошибки возвращает NULL. Записывает код ошибки в errno. ДЛЯ CD.
+// getcwd - записывает в буфер абсолютный путь к рабочей директории. В случае ошибки возвращает NULL. Записывает код ошибки в errno. ДЛЯ CD. PWD.
 // chdir - меняет текущую рабочую директорию. В случае ошибки возврашает -1. Записывает код ошибки в errno. FOR CD.
 // execve - очищает процесс, тем самым создавая новый чистый процесс. В случае ошибки возвращает -1. Записывает код ошибки в errno.
 // dup - создает новый fd и копирует в него указанный fd.
 // dup2 -  создает новый fd, с конкретно указанным номером и копирует в него указанный fd.
-// pipe - создает пару файловых дескрипторов, которые связаны друг с другом каналом. Данные из fildes[0] могут быть прочитаны из fildes[1]. Походу это нужно для |.
+// pipe - создает пару файловых дескрипторов, которые связаны друг с другом каналом. Данные записанные в fildes[1] могут быть прочитаны из fildes[0]. Походу это нужно для |.
 #include <fcntl.h> //open
 // open - открывает файл с указаным режимом доступа. Возвращает файловый дескрпитор. В случае ошибки повторяет поведение write.
 # include <sys/wait.h> // wait, wait3, wait4, waitpid
@@ -50,6 +50,7 @@
 // errno - глобальная переменная, которая содержит код последней ошибки.
 # include <stdio.h> // strerror
 // strerror - возвращает текстовое значение ошибки. Аргумент - код ошибки.
+# include <limits.h>
 # include "libft.h"
 # include "structures.h"
 
@@ -57,16 +58,22 @@ int     parser(char *line, t_main *main);
 int		parse_env(t_main *main);
 int     parse_echo(t_main *main);
 int		executor(t_main *main);
-void	exec_cd(t_main *main, t_cmd *cmd); // переход в указанный каталог. Если без аргументов, то переход в $HOME.
+int		exec_cd(t_main *main, t_cmd *cmd); // переход в указанный каталог. Если без аргументов, то переход в $HOME.
 void	exec_echo(t_main *main, t_cmd *cmd); // выводит строку, может записать строку в файл, вывод значения переменной.
 void	exec_env(t_main *main, t_cmd *cmd); // без аргументов и опций. Выводит переменные окружения.
 void	exec_exit(t_main *main, t_cmd *cmd); // завершает программу, и возвращает код ошибки. $? - походу придется создать переменную dollar_quest, которая будет выводится при подаче $?. По-умолчанию она 127. Перед каждым exit нужно сначала передать код в переменную dollar_quest.
-void	exec_export(t_main *main, t_cmd *cmd); // передает дочернему процессу указанную переменную окружения. Передаем структуру или двумерный массив для дочки???
-void	exec_pwd(t_main *main, t_cmd *cmd); // выводит переменную PWD.
-void	exec_unset(t_main *main, t_cmd *cmd); // удаляет переменную окружения.
+int		exec_export(t_main *main, t_cmd *cmd); // передает дочернему процессу указанную переменную окружения. Передаем структуру или двумерный массив для дочки???
+int		exec_pwd(t_main *main, t_cmd *cmd); // выводит переменную PWD.
+int		exec_unset(t_main *main, t_cmd *cmd); // удаляет переменную окружения.
 void	exec(t_main *main, t_cmd *cmd); // выполняем исполняемые файлы.
-void	create_variable(t_main *main, t_cmd *cmd); // создаем переменные окружения
 void	ft_perror(const char *str);
-void	error_handler(int code, char *str);
+int		error_handler(int code, char *str);
+void	ignore_squit(int code);
+void	ignore_sint(int code);
+void	quit_child(int code);
+void	kill_child(int code);
+char	**ft_2arraydup(char **array);
+char	**ft_stradd(char **array, char *str);
+int		ft_strchr_index(const char *s, int c);
 
 #endif

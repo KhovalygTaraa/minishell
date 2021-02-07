@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: swquinc <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/20 23:15:26 by swquinc           #+#    #+#             */
-/*   Updated: 2020/05/22 02:00:03 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/01 17:15:22 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ char	*ft_strchr(const char *s, int c)
 			return (&ptr[i]);
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

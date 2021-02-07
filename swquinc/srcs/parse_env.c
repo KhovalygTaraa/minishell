@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 17:00:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/26 18:33:18 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/01/30 18:11:35 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int		parse_home(t_main *main)
 	i = 0;
 	while (main->env[i] != NULL)
 	{
-		if (ft_strncmp(main->env[i], "HOME", 3) == 0)
-			path_line = main->env[i] + 4;
+		if (ft_strncmp(main->env[i], "HOME=", 5) == 0)
+			path_line = main->env[i] + 5;
 		i++;
 	}
 	if (!(path_line = ft_strjoin(path_line, "/")))
@@ -80,5 +80,6 @@ int			parse_env(t_main *main)
 {
 	parse_path(main);
 	parse_pwd(main);
+	parse_home(main);
 	return (0);
 }

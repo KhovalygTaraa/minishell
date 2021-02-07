@@ -6,35 +6,52 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/26 12:38:55 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/06 17:41:57 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+static int		minishell(t_main *main, char *line, int argc, char **argv)
+{
+	(void)argv;
+	(void)argc;
+	main->cmd = malloc(sizeof(t_cmd));
+	while(main->cmd != NULL)
+	{
+		parser(line, main); // парсинг
+		// if (main->cmd)
+		// 	executor(main); // выполнение
+	}
+	return (0);
+}
+
+/*
+** lsof -c - для проверки утечки файловых дескрипторов
+**
+**
+*/
+
 int     main(int argc, char **argv, char **env)
 {
 	char    *line;
 	t_main  main;
-	int     status;
-	pid_t	pid;
+	// int		status;
 
-	status = 1;
-	(void)argc;
-	(void)argv;
-	main.env = env;
-	while (status)
+	error = 0;
+	main.exit = 0;
+	main.env = ft_2arraydup(env);
+	main.stdout = dup(1);
+	main.stdin = dup(0);
+	while (main.exit == 0)
 	{
-		if ((pid = fork()) == 0)
-		{
-			ft_putstr_fd("sh> ", 1);
-			get_next_line(1, &line); // чтение
-			parser(line, &main); // парсинг
-			free(line);
-			executor(&main); // выполнение
-		}
-		else
-			wait(&status);
+		signal(SIGQUIT, ignore_squit);
+		ft_putstr_fd("minishell> ", 1);
+		signal(SIGINT, SIG_DFL); //ctrl + c  вывод -  ^C код ошибки - 130
+		get_next_line(1, &line); // чтение
+		// ft_putstr_fd("main\n", 1);
+		minishell(&main, line, argc, argv);
+		free(line);
 	}
 	return (0);
 }

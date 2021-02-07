@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 16:11:44 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/24 16:40:00 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/01/31 17:41:22 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	ft_strcmp(const char *s1, const char *s2)
 	while (s1[i] != 0 || s2[i] != 0)
 	{
 		if (s1[i] != s2[i])
-			return (0);
+			return (s1[i] - s2[i]);
 		i++;
 	}
-	return (1);
+	return (0);
 }

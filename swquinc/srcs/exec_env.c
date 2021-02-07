@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:41:18 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/25 18:33:34 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/06 15:19:26 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,13 @@
 
 void	exec_env(t_main *main, t_cmd *cmd)
 {
-	(void)main;
+	int		i;
+
 	(void)cmd;
-	printf("exec_env");
-	exit(EXIT_SUCCESS);
+	i = 0;
+	while (main->env[i] != NULL)
+	{
+		ft_putendl_fd(main->env[i], 1);
+		i++;
+	}
 }
