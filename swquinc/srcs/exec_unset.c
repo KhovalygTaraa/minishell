@@ -6,13 +6,13 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:41:02 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 15:20:52 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:58:05 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void		if_defined(t_main *main, int i, int a)
+static void		defined(t_main *main, int i, int a)
 {
 	char	**new_env;
 	int		k;
@@ -47,7 +47,7 @@ static void		remove_var(t_main *main, char *var)
 	while (main->env[++i] != NULL)
 	{
 		if (ft_strncmp(var, main->env[i], a) == 0)
-			if_defined(main, i, a);
+			defined(main, i, a);
 	}
 	free(var);
 }

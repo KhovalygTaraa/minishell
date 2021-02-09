@@ -6,14 +6,15 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 15:06:03 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/07 20:45:26 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURES_H
 # define STRUCTURES_H
+# define QUOTES_ERROR 49
 # define MALLOC 50
-# define EXECVE 51 // возможно valgrind будет ругаться на утечку.
+# define EXECVE 51
 # define STAT 52
 # define STAT_DIR 53
 # define CHDIR_ERROR 54
@@ -23,8 +24,8 @@
 # define UNSET_ERROR 58
 # define OPEN_ERROR 59
 
-pid_t			pid;
-int				error;
+pid_t			g_pid;
+int				g_error;
 
 typedef struct	s_cmd
 {
@@ -32,6 +33,12 @@ typedef struct	s_cmd
 	int			pipe;
 	char		**red;
 }				t_cmd;
+
+typedef struct s_quote
+{
+	char		*line;
+	int			quote;
+}				t_quote;
 
 typedef struct	s_main
 {
@@ -46,6 +53,7 @@ typedef struct	s_main
 	int			stdout; // стандартный вывод нужно сохранить
 	int			stdin; // стандартный ввод нужно сохранить
 	int			relink_fd;
+	t_list		*for_quotes;
 	t_cmd		*cmd;
 }				t_main;
 #endif

@@ -27,6 +27,7 @@ SRC_NAME		=	main.c \
 					exec_unset.c \
 					utils.c \
 					error_handler.c \
+					var_handler.c \
 					signal.c
 
 SRC_DIR			=	srcs

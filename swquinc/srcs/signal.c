@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 19:15:00 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 15:21:50 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:13:18 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ void	ignore_sint(int code)
 void	quit_child(int code)
 {
 	(void)code;
-	kill(pid, SIGQUIT);
+	kill(g_pid, SIGQUIT);
 	ft_putendl_fd("Quit: 3", 1);
-	error = 131;
+	g_error = 131;
 }
 
 void	kill_child(int code)
 {
 	(void)code;
-	kill(pid, SIGINT);
+	kill(g_pid, SIGINT);
 	write(1, "\n", 1);
-	error = 130;
+	g_error = 130;
 }

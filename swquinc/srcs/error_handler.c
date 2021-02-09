@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 15:21:21 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:12:45 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		error_handler(int code, char *str)
 	error_printer(code, str);
 	if (code == HOME_NOT_SET || code == CHDIR_ERROR || code == EXPORT_ERROR || code == UNSET_ERROR)
 	{
-		error = 1;
+		g_error = 1;
 		return (-1);
 	}
 	exit(code);

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:23:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/07 14:03:18 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/09 13:27:50 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,13 @@ char	**ft_stradd(char **array, char *str)
 	if (!(new = malloc(sizeof(char*) * (i + 2))))
 		return (NULL);
 	i = 0;
-	while (array[i] != NULL)
+	if (array[0] != NULL)
 	{
-		new[i] = array[i];
-		i++;
+		while (array[i] != NULL)
+		{
+			new[i] = array[i];
+			i++;
+		}
 	}
 	if (!(new[i] = ft_strdup(str)))
 		return (NULL);

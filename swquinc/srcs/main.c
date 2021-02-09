@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 17:41:57 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:18:25 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static int		minishell(t_main *main, char *line, int argc, char **argv)
 	while(main->cmd != NULL)
 	{
 		parser(line, main); // парсинг
+		if (main->cmd)
+			var_handler(main);
 		// if (main->cmd)
 		// 	executor(main); // выполнение
 	}
@@ -38,7 +40,7 @@ int     main(int argc, char **argv, char **env)
 	t_main  main;
 	// int		status;
 
-	error = 0;
+	g_error = 0;
 	main.exit = 0;
 	main.env = ft_2arraydup(env);
 	main.stdout = dup(1);

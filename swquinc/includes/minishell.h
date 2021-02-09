@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/07 14:03:51 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/08 18:12:17 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ void	kill_child(int code);
 char	**ft_2arraydup(char **array);
 char	**ft_stradd(char **array, char *str);
 int		ft_strchr_index(const char *s, int c);
+int		var_handler(t_main *main);
 
 #endif

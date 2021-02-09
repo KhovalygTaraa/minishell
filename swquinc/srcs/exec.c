@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/30 18:24:31 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/08 19:12:33 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void			exec(t_main *main, t_cmd *cmd)
 	int		i;
 	int		status;
 
-	if ((pid = fork()) == 0)
+	if ((g_pid = fork()) == 0)
 	{
 		i = exec_bin_path(main, cmd);
 		if (i == -1)
