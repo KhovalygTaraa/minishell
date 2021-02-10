@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 15:20:41 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/08 19:27:40 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/09 17:26:32 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int  cmd_filler(t_main *main)
 			return (0);
 		cmd->cmd = malloc(sizeof(char*) * 5);
 		cmd->cmd[0] = "echo"; 
-		cmd->cmd[1] = "TAKIB $USER OBRAZOM $ PWD$ HOME";
+		cmd->cmd[1] = "TAKIB $USER OBRAZOM $ PWD $ HOME";
 		cmd->cmd[2] = NULL;
 		cmd->cmd[3] = NULL;
 		cmd->cmd[4] = NULL;

@@ -6,23 +6,11 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/09 16:12:40 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/09 18:45:13 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// echo "$ PWD"
-// echo $ PWD
-// echo "$PWD"
-// echo $PWD
-// echo \$PWD
-// echo '$PWD'
-
-// структура хендлера такова, если находим $, то проверяем переменная это или нет, если да, то вырезаем все что до $ в отдельный одномерный массив и добавляем его в двумерный массив res. 
-// вторым шагом ищем конец переменной, конец обозначается символами '\0', '$' и ' ';  Если мы встретили эти символы, то вырезаем название переменной в отдельный одномерный массив и добавляем в двумерный массив res
-// третьим шагом мы должны передать новое начало строки (то есть конец перменной + 1) для поиска следующего $.
-
-
 
 static char		*put_var(t_main *main, char *var, char **origin)
 {
@@ -31,78 +19,88 @@ static char		*put_var(t_main *main, char *var, char **origin)
 	int		a;
 
 	i = 0;
-	a = 0;
+	a = -1;
 	res = NULL;
 	while (var[i] != '\0' && var[i] != '$' && var[i] != ' ')
 		i++;
 	*origin = var + i;
-	var = ft_substr(var, 0, i);
-	while (main->env[a] != NULL)
-	{
+	if (!(var = ft_substr(var, 0, i)))
+		return (NULL);
+	while (main->env[++a] != NULL)
 		if (ft_strncmp(var, main->env[a], i) == 0 && main->env[a][i] == '=')
-			res = ft_strdup(main->env[a] + i + 1);
-		a++;
+			res = main->env[a] + i + 1;
+	free(var);
+	return (res);
+}
+
+static char		**var_seeker(t_main *main, char *src, char *origin, char **res)
+{
+	int		a;
+	int		b;
+	char	*dollar;
+
+	dollar = origin;
+	b = 0;
+	a = 0;
+	while ((a = ft_strchr_index(origin, '$')) != INT_MAX)
+	{
+		b = b + a + 2;
+		if (origin[++a] == ' ')
+		{
+			if (!(res = ft_stradd(res, ft_substr(dollar, 0, b - 2))))
+				error_handler(MALLOC, "var_seeker");
+			if (!(res = ft_stradd(res, put_var(main, origin + a + 1, &dollar))))
+				error_handler(MALLOC, "var_seeker");
+			b = 0;
+			origin = dollar;
+		}
+		else
+			origin = origin + a + 1;
 	}
 	return (res);
 }
 
-static char		**var_seeker(t_main *main, char *src)
+static void		replace_cmd(char **str, char **new_str)
 {
-	char	**res;
-	char	*dollar;
-	char	*origin;
 	int		i;
-	int		a;
-	int		b;
+	char	*res;
 
-	res = malloc(sizeof(char*));
-	res[0] = NULL;
 	i = 0;
-	b = 0;
-	a = 0;
-	while (src[i] != NULL)
+	res = new_str[i];
+	while (new_str[i + 1] != NULL)
 	{
-		origin = src[i];
-		dollar = src[i];
-		while ((a = ft_strchr_index(origin, '$')) != INT_MAX)
-		{
-			b = b + a + 2;
-			if (origin[++a] == ' ')
-			{
-				res = ft_stradd(res, ft_substr(dollar, 0, b - 2));
-				res = ft_stradd(res, put_var(main, origin + a + 1, &dollar));
-				b = 0;
-				origin = dollar;
-			}
-			else
-				origin = origin + a + 1;
-		}
+		res = ft_strjoin(res, new_str[i + 1]);
+		free(new_str[i]);
 		i++;
 	}
-	return (res);
+	free (new_str);
+	// free(str); // выдает free error так как в моем заменителе парсера я не аллоцирую память.
+	*str = res;
 }
 
 int		var_handler(t_main *main)
 {
 	int		i;
 	char	**res;
+	char	*origin;
+	char	*dollar;
 
+	i = -1;
+	while (main->cmd->cmd[++i] != NULL)
+	{
+		if (!(res = malloc(sizeof(char*))))
+			error_handler(MALLOC, "var_handler");
+		res[0] = NULL;
+		origin = main->cmd->cmd[i];
+		dollar = main->cmd->cmd[i];
+		res = var_seeker(main, main->cmd->cmd[i], origin, res);
+		if (res[0] != NULL)
+			replace_cmd(&main->cmd->cmd[i], res);
+	}
 	i = 0;
-	res = var_seeker(main, main->cmd->cmd);
 	while (main->cmd->cmd[i] != NULL)
 	{
-		var_seeker(main, main->cmd->cmd[i]);
-		i++;
-	}
-	i = 0;
-	while (main->cmd->red[i] != NULL)
-	{
-		i++;
-	}
-	while (res[i] != NULL)
-	{
-		ft_putstr_fd(res[i], 1);
-		ft_putchar_fd('$', 1);
+		ft_putstr_fd(main->cmd->cmd[i], 1);
 		ft_putchar_fd('\n', 1);
 		i++;
 	}

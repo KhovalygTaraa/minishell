@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:23:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/09 13:27:50 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/09 17:18:59 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	**ft_stradd(char **array, char *str)
 	int		i;
 	char	**new;
 
+	if (str == NULL)
+		return (NULL);
 	i = 0;
 	while (array[i] != NULL)
 		i++;
