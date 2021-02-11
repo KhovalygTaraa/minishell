@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/08 19:12:45 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:12:28 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void		ft_perror2(const char *value, const char *command_name, const char 
 
 static void		error_printer(int code, char *str)
 {
-	if (code == MALLOC || code == EXECVE || code == STAT || code == CHDIR_ERROR || code == OPEN_ERROR)
+	if (code == MALLOC || code == EXECVE || code == STAT || code == CHDIR_ERROR || code == OPEN_ERROR || code == DUP_ERROR)
 		ft_perror(str);
 	else if (code == STAT_DIR)
 		ft_perror2(NULL, str, "is a directory");

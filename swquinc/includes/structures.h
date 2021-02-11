@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/07 20:45:26 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:11:57 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define EXPORT_ERROR 57
 # define UNSET_ERROR 58
 # define OPEN_ERROR 59
+# define DUP_ERROR 60
 
 pid_t			g_pid;
 int				g_error;

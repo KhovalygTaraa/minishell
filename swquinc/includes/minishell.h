@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/08 18:12:17 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/11 15:11:16 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@
 # include "libft.h"
 # include "structures.h"
 
-int     parser(char *line, t_main *main);
+int     parser(t_cmd **cmd, char *line);
 int		parse_env(t_main *main);
 int     parse_echo(t_main *main);
 int		executor(t_main *main);
