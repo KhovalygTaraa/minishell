@@ -14,7 +14,7 @@ NAME			=	minishell
 
 SRC_NAME		=	main.c \
 					parser.c \
-					parse_echo.c \
+					parse_redir.c \
 					parse_env.c \
 					executor.c \
 					exec.c \
@@ -28,7 +28,8 @@ SRC_NAME		=	main.c \
 					utils.c \
 					error_handler.c \
 					var_handler.c \
-					signal.c
+					signal.c \
+					lexer.c
 
 SRC_DIR			=	srcs
 OBJ_DIR			=	obj

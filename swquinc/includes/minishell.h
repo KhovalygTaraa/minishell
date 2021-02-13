@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/11 15:11:16 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/13 01:56:00 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@
 # include "structures.h"
 
 int     parser(t_cmd **cmd, char *line);
+int		lexer(char *line);
 int		parse_env(t_main *main);
-int     parse_echo(t_main *main);
+int     parse_redir(t_main *main);
 int		executor(t_main *main);
 int		exec_cd(t_main *main, t_cmd *cmd); // переход в указанный каталог. Если без аргументов, то переход в $HOME.
 void	exec_echo(t_main *main, t_cmd *cmd); // выводит строку, может записать строку в файл, вывод значения переменной.
@@ -75,6 +76,7 @@ void	kill_child(int code);
 char	**ft_2arraydup(char **array);
 char	**ft_stradd(char **array, char *str);
 int		ft_strchr_index(const char *s, int c);
-int		var_handler(t_main *main);
+int		var_handler(t_main *main, char **src, int a);
+void	ft_free_2array(char **array);
 
 #endif

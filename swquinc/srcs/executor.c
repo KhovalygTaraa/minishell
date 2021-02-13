@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 15:52:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 15:07:55 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/13 13:15:01 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,35 @@ static int	cmd_selector(t_main *main, t_cmd *cmd)
 		exec(main, cmd);
 	return (0);
 }
+
+// static int	standart_output(t_main *main, int *i, char **red)
+// {
+// 	int		fd;
+// 	int		a;
+
+// 	if (main->relink_fd == -1)
+// 		main->relink_fd = 1;
+// 	a = *i;
+// 	if (red[a][0] == '>' && red[a][1] != '>')
+// 	{
+// 		a++;
+// 		if ((fd = open(red[a], O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+// 			error_handler(OPEN_ERROR, red[a]);
+// 		dup2(fd, main->relink_fd);
+// 	}
+// 	else
+// 	{
+// 		a++;
+// 		if ((fd = open(red[a], O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
+// 			error_handler(OPEN_ERROR, red[a]);
+// 		dup2(fd, main->relink_fd);
+// 	}
+// 	if (main->relink_fd == 1)
+// 		main->is_stdout_taken = 1;
+// 	*i = a;
+// 	close(fd);
+// 	return (0);
+// }
 
 static int	standart_output(t_main *main, int *i, char **red)
 {
@@ -88,6 +117,7 @@ static int	red_maker(t_main *main, t_cmd *cmd)
 
 	i = 0;
 	res = 0;
+	main->relink_fd = -1;
 	while (cmd->red[i] != NULL)
 	{
 		if (ft_strcmp(cmd->red[i], ">") == 0)
@@ -105,6 +135,36 @@ static int	red_maker(t_main *main, t_cmd *cmd)
 	}
 	return (res);
 }
+
+// static int	red_maker(t_main *main, t_cmd *cmd)
+// {
+// 	int		i;
+// 	int		res;
+// 	int		a;
+// 	char	*tmp;
+
+// 	tmp = NULL;
+// 	a = 0;
+// 	i = -1;
+// 	res = 0;
+// 	while (cmd->red[++i] != NULL)
+// 	{
+// 		if (cmd->red[i][0] == '>')
+// 			res = standart_output(main, &i, cmd->red);
+// 		else if (cmd->red[i][0] == '<')
+// 			res = standart_input(main, &i, cmd->red);
+// 		else
+// 		{
+// 			while (cmd->red[i][a] != '>' && cmd->red[i][a] != '<')
+// 				a++;
+// 			if (!(tmp = ft_substr(cmd->red[i], 0, a)))
+// 				error_handler(MALLOC, "red_maker");
+// 			main->relink_fd = ft_atoi(tmp);
+// 			i++;
+// 		}
+// 	}
+// 	return (res);
+// }
 
 /*
 ** Executor определяет какую команду выполнить и выполняет ее.

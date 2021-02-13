@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:41:02 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/08 19:58:05 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/12 18:28:37 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ static void		defined(t_main *main, int i, int a)
 	k = -1;
 	while (main->env[++a] != NULL)
 	{
-		if (main->env[a] == main->env[i])
+		if (a == i)
+		{
+			free(main->env[i]);
 			a++;
+		}
 		new_env[++k] = main->env[a];
 	}
 	free(main->env);
@@ -47,7 +50,10 @@ static void		remove_var(t_main *main, char *var)
 	while (main->env[++i] != NULL)
 	{
 		if (ft_strncmp(var, main->env[i], a) == 0)
+		{
 			defined(main, i, a);
+			break ;
+		}
 	}
 	free(var);
 }

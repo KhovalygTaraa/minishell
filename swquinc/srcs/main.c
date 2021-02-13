@@ -6,11 +6,13 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/11 15:26:18 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/13 13:15:04 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+
 
 static void		init(t_main *main, char **env)
 {
@@ -41,11 +43,34 @@ static int		minishell(t_main *main, char *line, int argc, char **argv)
 	while(i != 0)
 	{
 		free(main->cmd);
-		i = parser(&main->cmd, line); // парсинг
+		if (line[0] == '\0')
+			break ;
+		if (lexer(line) == -1)
+		{
+			ft_putendl_fd("ne ok", 1);
+			break ;
+		}
+		// if (parser(&main->cmd, line) == 0)
+		// {
+		// 	ft_putstr_fd("2", 1);
+		// 	break ;
+		// }
+		i = parser(&main->cmd, line);
+		// while (main->cmd->cmd[a] != NULL)
+		// {
+		// 	ft_putendl_fd(main->cmd->cmd[a], 1);
+		// 	a++;
+		// }
 		// if (i != 0)
-		// 	var_handler(main);
-		if (i != 0)
-			executor(main); // выполнение
+		// ft_putstr_fd("3", 1);
+		if (main->cmd->red)
+			parse_redir(main);
+		if (main->cmd->cmd)
+			var_handler(main, main->cmd->cmd, 1);
+		if (main->cmd->red)
+			var_handler(main, main->cmd->red, 0);
+		// ft_putstr_fd("4", 1);
+		executor(main); // выполнение
 	}
 	return (0);
 }

@@ -6,11 +6,24 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:23:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/09 17:18:59 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/13 12:34:02 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free_2array(char **array)
+{
+	int		i;
+
+	i = 0;
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
 
 int		ft_strchr_index(const char *s, int c)
 {
@@ -55,8 +68,9 @@ char	**ft_stradd(char **array, char *str)
 			i++;
 		}
 	}
-	if (!(new[i] = ft_strdup(str)))
-		return (NULL);
+	// if (!(new[i] = ft_strdup(str)))
+	// 	return (NULL);
+	new[i] = str;
 	new[i + 1] = NULL;
 	free(array);
 	return (new);
