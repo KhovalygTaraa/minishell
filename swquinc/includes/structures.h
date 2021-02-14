@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/11 15:11:57 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 18:33:08 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@
 # define UNSET_ERROR 58
 # define OPEN_ERROR 59
 # define DUP_ERROR 60
+# define PIPE_ERROR 61
+# define FORK_ERROR 62
+# define SIGNAL_ERROR 63
+# define WAIT_ERROR 64
 
 pid_t			g_pid;
 int				g_error;

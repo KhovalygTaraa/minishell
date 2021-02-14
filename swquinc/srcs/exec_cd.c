@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:39:55 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/06 15:18:37 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 18:58:35 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int				exec_cd(t_main *main, t_cmd *cmd)
 {
 	char	*oldpwd;
 
-	if (cmd->cmd[1] == NULL)
+	if (cmd->cmd[1] == NULL || ft_strlen(cmd->cmd[1]) == 0)
 	{
 		if (main->home == NULL)
-			return (error_handler(HOME_NOT_SET, "cd"));
+			return (error_handler(HOME_NOT_SET, "cd: "));
 		if (chdir(main->home) == -1)
 			return (error_handler(CHDIR_ERROR, main->home));
 		if ((oldpwd = set_pwd(main)) == NULL)

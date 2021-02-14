@@ -6,11 +6,16 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/12 20:16:53 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 20:49:04 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// static char		**tilda_handler(t_main *main, char *tilda, char *origin, char **res)
+// {
+
+// }
 
 static char		*put_var(t_main *main, char *var, char **origin)
 {
@@ -29,6 +34,8 @@ static char		*put_var(t_main *main, char *var, char **origin)
 	while (main->env[++a] != NULL)
 		if (ft_strncmp(var, main->env[a], i) == 0 && main->env[a][i] == '=')
 			res = ft_strdup(main->env[a] + i + 1);
+	if (ft_strcmp(var, "?") == 0)
+		res = ft_strdup(ft_itoa(g_error));
 	free(var);
 	return (res);
 }
@@ -99,12 +106,6 @@ int		var_handler(t_main *main, char **src, int a)
 				replace_cmd(&main->cmd->red[i], res);
 		}
 	}
-	i = 0;
-	while (src[i] != NULL)
-	{
-		ft_putstr_fd(src[i], 1);
-		ft_putchar_fd('\n', 1);
-		i++;
-	}
+	// tilda_handler(main, tmp, tmp, res);
 	return (0);
 }

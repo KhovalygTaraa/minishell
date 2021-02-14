@@ -14,6 +14,7 @@ NAME			=	minishell
 
 SRC_NAME		=	main.c \
 					parser.c \
+					parser_core.c \
 					parse_redir.c \
 					parse_env.c \
 					executor.c \
@@ -38,7 +39,7 @@ LIBFT_DIR		=	libft
 LIBFT_A			=	$(LIBFT_DIR)/libft.a
 
 CC				=	gcc
-FLAGS			=	#-Wall -Wextra -Werror
+FLAGS			=	-Wall -Wextra -Werror
 INCLUDES		= 	-I includes -I $(LIBFT_DIR)
 
 OBJ 			= 	$(addprefix $(OBJ_DIR)/, $(SRC_NAME:.c=.o))

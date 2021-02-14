@@ -6,13 +6,11 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 13:15:04 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 20:45:42 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-
 
 static void		init(t_main *main, char **env)
 {
@@ -32,69 +30,86 @@ static int		minishell(t_main *main, char *line, int argc, char **argv)
 	(void)argv;
 	(void)argc;
 	int		i;
-	int		a;
 
 	i = 1;
-	a = 0;
+	if (line == NULL || line[0] == '\0')
+		return (0);
 	if (!(main->cmd = malloc(sizeof(t_cmd))))
 		error_handler(MALLOC, "minishell");
 	ft_bzero(main->cmd, sizeof(t_cmd));
-	parse_env(main);
 	while(i != 0)
 	{
+		parse_env(main);
 		free(main->cmd);
-		if (line[0] == '\0')
-			break ;
-		if (lexer(line) == -1)
-		{
-			ft_putendl_fd("ne ok", 1);
-			break ;
-		}
-		// if (parser(&main->cmd, line) == 0)
-		// {
-		// 	ft_putstr_fd("2", 1);
-		// 	break ;
-		// }
+		lexer(line);
 		i = parser(&main->cmd, line);
-		// while (main->cmd->cmd[a] != NULL)
-		// {
-		// 	ft_putendl_fd(main->cmd->cmd[a], 1);
-		// 	a++;
-		// }
-		// if (i != 0)
-		// ft_putstr_fd("3", 1);
 		if (main->cmd->red)
 			parse_redir(main);
 		if (main->cmd->cmd)
 			var_handler(main, main->cmd->cmd, 1);
 		if (main->cmd->red)
 			var_handler(main, main->cmd->red, 0);
-		// ft_putstr_fd("4", 1);
-		executor(main); // выполнение
+		executor(main);
 	}
 	return (0);
 }
 
 /*
 ** lsof -c - для проверки утечки файловых дескрипторов
-**
-**
 */
+
+static char		*get_line(int *fildes, int i)
+{
+	char	*line;
+	int		status;
+
+	if (i == 1)
+	{
+		signal(SIGINT, SIG_DFL);
+		close(fildes[0]);
+		if ((get_next_line(0, &line)) <= 0)
+			exit(0);
+		ft_putendl_fd(line, fildes[1]);
+		close(fildes[1]);
+		free(line);
+		exit(1);
+	}
+	else
+	{
+		wait(&status);
+		if (WIFEXITED(status) != 0)
+			if (WEXITSTATUS(status) == 0)
+				exec_exit(NULL, NULL);
+		close(fildes[1]);
+		if (get_next_line(fildes[0], &line) <= 0)
+			return (NULL);
+		return (line);
+	}
+}
 
 int     main(int argc, char **argv, char **env)
 {
 	char    *line;
 	t_main  main;
-	// int		status;
+	int		fildes[2];
 
 	init(&main, env);
 	while (main.exit == 0)
 	{
-		signal(SIGQUIT, ignore_squit);
+		if (signal(SIGQUIT, ignore_squit) == SIG_ERR)
+			error_handler(SIGNAL_ERROR, "main");
+		if (signal(SIGINT, ignore_sint) == SIG_ERR)
+			error_handler(SIGNAL_ERROR, "main");
 		ft_putstr_fd("minishell> ", 1);
-		signal(SIGINT, SIG_DFL); //ctrl + c  вывод -  ^C код ошибки - 130
-		get_next_line(1, &line); // чтение
-		// ft_putstr_fd("main\n", 1);
+		if (pipe(fildes) == -1)
+			error_handler(PIPE_ERROR, "main");
+		if ((g_pid = fork()) == 0)
+			get_line(fildes, 1);
+		else if (g_pid == -1)
+			error_handler(FORK_ERROR, "main");
+		else
+			line = get_line(fildes, 0);
+		close (fildes[0]);
 		minishell(&main, line, argc, argv);
 		free(line);
 	}

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 17:00:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/30 18:11:35 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 18:57:08 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@ static int		parse_home(t_main *main)
 	int		i;
 	char	*path_line;
 
+	path_line = NULL;
 	i = 0;
 	while (main->env[i] != NULL)
 	{
 		if (ft_strncmp(main->env[i], "HOME=", 5) == 0)
 			path_line = main->env[i] + 5;
 		i++;
+	}
+	if (path_line == NULL)
+	{
+		main->home = path_line;
+		return (0);
 	}
 	if (!(path_line = ft_strjoin(path_line, "/")))
 		ft_putendl_fd("Error: malloc error", 1);

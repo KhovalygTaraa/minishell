@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:23:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 12:34:02 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/13 15:39:47 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	**ft_2arraydup(char **array)
 		return (NULL);
 	while (array[i] != NULL)
 		i++;
-	if (!(new = malloc(sizeof(char*) * i + 1)))
+	if (!(new = malloc(sizeof(char*) * (i + 1))))
 		return (NULL);
 	i = 0;
 	while (array[i] != NULL)

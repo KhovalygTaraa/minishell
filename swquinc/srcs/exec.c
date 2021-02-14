@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/08 19:12:33 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 20:31:55 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int		exec_bin_path(t_main *main, t_cmd *cmd)
 	i = 0;
 	while (main->path[i])
 		i++;
-	if (!(path = malloc(sizeof(char*) * i + 1)))
+	if (!(path = malloc(sizeof(char*) * (i + 1))))
 		error_handler(MALLOC, "exec_bin_path");
 	i = -1;
 	while (main->path[++i])
@@ -63,7 +63,7 @@ static void		exec_absolute_path(t_main *main, t_cmd *cmd)
 	struct stat		buf;
 
 	path = cmd->cmd[0];
-	if (!(stat(path, &buf)))
+	if (stat(path, &buf) == -1)
 	{
 		if (S_ISDIR(buf.st_mode))
 			error_handler(STAT_DIR, path);
@@ -87,12 +87,17 @@ void			exec(t_main *main, t_cmd *cmd)
 		if (i == -1)
 			exec_absolute_path(main, cmd);
 	}
+	else if (g_pid == -1)
+		error_handler(FORK_ERROR, "exec");
 	else
 	{
-		signal(SIGQUIT, quit_child); //ctrl + \  вывод - ^\Quit: 3 код ошибки - 131
-		signal(SIGINT, kill_child); //ctrl + c  вывод -  ^C код ошибки - 130
-		wait(&status);
+		if (signal(SIGQUIT, quit_child) == SIG_ERR)
+			error_handler(SIGNAL_ERROR, "exec");
+		if (signal(SIGINT, kill_child) == SIG_ERR)
+			error_handler(SIGNAL_ERROR, "exec");
+		if (wait(&status) == -1)
+			error_handler(WAIT_ERROR, "exec");
 		if (WIFEXITED(status) != 0)
-			WEXITSTATUS(status); // for $?
+			g_error = WEXITSTATUS(status);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/11 15:12:28 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 20:24:53 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,21 @@ static void		ft_perror2(const char *value, const char *command_name, const char 
 
 static void		error_printer(int code, char *str)
 {
-	if (code == MALLOC || code == EXECVE || code == STAT || code == CHDIR_ERROR || code == OPEN_ERROR || code == DUP_ERROR)
+	if (code == MALLOC || code == EXECVE || code == CHDIR_ERROR || code == OPEN_ERROR || code == DUP_ERROR || code == PIPE_ERROR || code == FORK_ERROR || code == SIGNAL_ERROR || code == WAIT_ERROR)
+	{
+		g_error = 121;
 		ft_perror(str);
+	}
+	else if (code == STAT)
+	{
+		g_error = 127;
+		ft_perror2(NULL, str, ": command not found");
+	}
 	else if (code == STAT_DIR)
+	{
+		g_error = 126;
 		ft_perror2(NULL, str, "is a directory");
+	}
 	else if (code == HOME_NOT_SET)
 		ft_perror2(NULL, str, "HOME not set");
 	else if (code == EXPORT_ERROR)
@@ -54,5 +65,5 @@ int		error_handler(int code, char *str)
 		g_error = 1;
 		return (-1);
 	}
-	exit(code);
+	exit(g_error);
 }

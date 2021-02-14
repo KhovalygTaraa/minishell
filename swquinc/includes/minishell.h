@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 01:56:00 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 19:43:26 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		executor(t_main *main);
 int		exec_cd(t_main *main, t_cmd *cmd); // переход в указанный каталог. Если без аргументов, то переход в $HOME.
 void	exec_echo(t_main *main, t_cmd *cmd); // выводит строку, может записать строку в файл, вывод значения переменной.
 void	exec_env(t_main *main, t_cmd *cmd); // без аргументов и опций. Выводит переменные окружения.
-void	exec_exit(t_main *main, t_cmd *cmd); // завершает программу, и возвращает код ошибки. $? - походу придется создать переменную dollar_quest, которая будет выводится при подаче $?. По-умолчанию она 127. Перед каждым exit нужно сначала передать код в переменную dollar_quest.
+void	exec_exit(t_main *main, t_cmd *cmd); // завершает программу, и возвращает код ошибки. $? - походу придется создать переменную dollar_quest, которая будет выводится при подаче $?. Перед каждым exit нужно сначала передать код в переменную dollar_quest.
 int		exec_export(t_main *main, t_cmd *cmd); // передает дочернему процессу указанную переменную окружения. Передаем структуру или двумерный массив для дочки???
 int		exec_pwd(t_main *main, t_cmd *cmd); // выводит переменную PWD.
 int		exec_unset(t_main *main, t_cmd *cmd); // удаляет переменную окружения.
@@ -78,5 +78,8 @@ char	**ft_stradd(char **array, char *str);
 int		ft_strchr_index(const char *s, int c);
 int		var_handler(t_main *main, char **src, int a);
 void	ft_free_2array(char **array);
+void	put(char **s, char c);
+void	push(char ***cmd, char **s);
+int		terminate_handler(char **s, char **p, t_cmd **cmd);
 
 #endif

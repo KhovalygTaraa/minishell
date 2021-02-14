@@ -6,13 +6,13 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 15:49:30 by swquinc           #+#    #+#             */
-/*   Updated: 2021/01/31 20:01:35 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/13 19:51:21 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# define BUFFER_SIZE 100
+# define BUFFER_SIZE 1
 # include <stddef.h>
 # include <string.h>
 # include <stdlib.h>

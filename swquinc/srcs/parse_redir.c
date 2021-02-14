@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 12:14:22 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 12:54:15 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 19:49:53 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static char		*parse_symb(char *src)
 	char	*res;
 
 	a = 0;
+	res = NULL;
 	while (src[a] != '>' && src[a] != '<')
 		a++;
 	if (src[a] == '>' && src[a + 1] == '>')

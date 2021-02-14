@@ -6,17 +6,11 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 09:52:43 by hovalygta         #+#    #+#             */
-/*   Updated: 2021/01/31 14:54:46 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/14 17:59:34 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	error(char **need_free)
-{
-	free(*need_free);
-	return (-1);
-}
 
 static char	*cleaner(char *need_free, char *reallocate)
 {
@@ -62,24 +56,22 @@ static int	reader(int fd, char *buffer, char **line)
 
 	n = NULL;
 	*line = remainder_reader(&remainder, &n);
-	while (n == NULL && (i = read(fd, buffer, BUFFER_SIZE)))
+	while (n == NULL && (i = read(fd, buffer, BUFFER_SIZE)) >= 0)
 	{
+		if (i == 0 && *line[0] != '\0')
+		{
+			write(1, "  \b\b", 4);
+			continue ;
+		}
+		else if (i == 0 && *line[0] == '\0')
+		{
+			write(1, "  \b\b", 4);
+			return (0);
+		}
 		buffer[i] = '\0';
 		if ((n = ft_strchr(buffer, '\n')) == NULL)
-		{
 			*line = ft_strjoin_free(*line, buffer);
-		}
-		else
-		{
-			*n = '\0';
-			*line = ft_strjoin_free(*line, buffer);
-			n++;
-			if (*n != '\0')
-				remainder = ft_strdup(n);
-		}
 	}
-	if (*line == NULL)
-		return (error(&remainder));
 	return (n == NULL && i == 0 && remainder == NULL) ? 0 : 1;
 }
 
@@ -87,21 +79,13 @@ int			get_next_line(int fd, char **line)
 {
 	char			*buffer;
 	int				i;
-	static int		b;
 
-	if (fd < 0 || read(fd, NULL, 0) || BUFFER_SIZE <= 0 || !line)
+	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE <= 0 || !line)
 		return (-1);
 	if ((buffer = ft_line_malloc(BUFFER_SIZE, sizeof(char))) == NULL)
 		return (-1);
 	i = reader(fd, buffer, line);
 	free(buffer);
 	buffer = NULL;
-	if (i > 0)
-		b = 0;
-	if (i == 0 && b == 0)
-	{
-		b = 1;
-		i = 1;
-	}
 	return (i);
 }
