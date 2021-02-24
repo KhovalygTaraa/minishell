@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:39:27 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/12 05:17:54 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/24 20:39:06 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	exec_echo(t_main *main, t_cmd *cmd)
 	while (cmd->cmd[i] != NULL)
 	{
 		ft_putstr_fd(cmd->cmd[i], 1);
-		ft_putchar_fd(' ', 1);
+		if (cmd->cmd[i + 1] != NULL)
+			ft_putchar_fd(' ', 1);
 		i++;
 	}
 	if (flag == 0)

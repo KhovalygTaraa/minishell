@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 20:24:53 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/25 00:16:08 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static void		error_printer(int code, char *str)
 		ft_perror2(str, "export: ", "not a valid identifier");
 	else if (code == UNSET_ERROR)
 		ft_perror2(str, "unset: ", "not a valid identifier");
+	else if (code == LEXER_ERROR)
+		ft_perror2(NULL, "syntax error near unexpected token ", str);
 } 
 
 int		error_handler(int code, char *str)

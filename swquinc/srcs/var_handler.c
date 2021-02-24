@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 20:49:04 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/25 01:57:15 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,27 @@ static char		*put_var(t_main *main, char *var, char **origin)
 	char	*res;
 	int		i;
 	int		a;
+	char	*var1;
 
 	i = 0;
 	a = -1;
 	res = NULL;
-	while (var[i] != '\0' && var[i] != '$' && var[i] != ' ')
+	while ((var[i] >= 48 && var[i] <= 57) || (var[i] >= 65 && var[i] <= 90) || (var[i] >= 97 && var[i] <= 122))
 		i++;
 	*origin = var + i;
-	if (!(var = ft_substr(var, 0, i)))
+	if (!(var1 = ft_substr(var, 0, i)))
 		return (NULL);
 	while (main->env[++a] != NULL)
-		if (ft_strncmp(var, main->env[a], i) == 0 && main->env[a][i] == '=')
-			res = ft_strdup(main->env[a] + i + 1);
-	if (ft_strcmp(var, "?") == 0)
-		res = ft_strdup(ft_itoa(g_error));
-	free(var);
+		if (ft_strncmp(var1, main->env[a], i) == 0 && main->env[a][i] == '=')
+			if (!(res = ft_strdup(main->env[a] + i + 1)))
+				error_handler(MALLOC, "put_var");
+	if (ft_strcmp(var1, "?") == 0)
+		if (!(res = ft_strdup(ft_itoa(g_error))))
+			error_handler(MALLOC, "put_var");
+	free(var1);
+	if (res == NULL)
+		res = ft_strdup("");
+	res = ft_strjoin_free(res, var + i);
 	return (res);
 }
 
@@ -56,7 +62,6 @@ static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 				error_handler(MALLOC, "var_seeker");
 			if (!(res = ft_stradd(res, put_var(main, origin + a + 1, &dollar))))
 				error_handler(MALLOC, "var_seeker");
-			b = 0;
 			origin = dollar;
 		}
 		else

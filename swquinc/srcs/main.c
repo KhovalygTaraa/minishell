@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/24 20:20:45 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/25 00:44:16 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ static void		init(t_main *main, char **env)
 
 static int		minishell(t_main *main, char *line, int argc, char **argv)
 {
-	(void)argv;
-	(void)argc;
 	int		i;
 
+	(void)argc;
+	(void)argv;
 	i = 1;
 	if (line == NULL || line[0] == '\0')
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 19:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 19:43:40 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/25 00:23:45 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	parser_switch(char **s, char **p, t_cmd **cmd)
 {
 	int		type;
 
-	if (*(*p) == '$')
+	if (*(*p) == '$' || **p == '~')
 	{
 		put(s, *(*p)++);
 		put(s, 1);

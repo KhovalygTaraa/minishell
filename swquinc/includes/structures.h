@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 18:33:08 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/24 23:50:43 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define FORK_ERROR 62
 # define SIGNAL_ERROR 63
 # define WAIT_ERROR 64
+# define LEXER_ERROR 65
 
 pid_t			g_pid;
 int				g_error;
@@ -51,6 +52,7 @@ typedef struct	s_main
 	char		**path; //malloced -> parse_env
 	char		*pwd; //malloced -> parse_env
 	char		*home; // malloced -> parse_env
+	char		*tilda;
 	int			exit; //  временная переменная, забыл для чего это
 	int			fildes[2]; // for pipe
 	int			is_stdout_taken; // for pipe

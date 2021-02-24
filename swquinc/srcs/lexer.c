@@ -1,71 +1,86 @@
 #include "minishell.h"
 
-static int		conflicts(int c, int *p)
+static char *cpy(const char *p)
 {
-	if ((c - 256 == '|' || c - 256 == ';') && *p == 0)
-		return (-1);
-	if (c > 255 && *p > 255)
+	char	*s;
+
+	s = malloc(2);
+	s[0] = *p;
+	s[1] = 0;
+	return (s);
+}
+
+static int	conflicts(char **p, char **cur, int *n)
+{
+	if (!*n)
 	{
-		if (*p == '>' + 512 && c - 256 == '>')
-			return (-1);
-		if (c - 256 != '\'' && c - 256 != '\"'
-			&& *p - 256 != '\'' && *p - 256 != '\"'
-			&& (*p - 256 == '|' || *p - 256 == '<' || *p - 256 == '>'
-				|| c - 256 == '|' || c - 256 == ';'))
+		if ((**p == '|' || **p == ';') && *cur == 0 && !*n)
+			return (error_handler(LEXER_ERROR, cpy(*p)));
+		if ((**p == '|' || **p == ';') && **cur != '\'' && **cur != '\"')
+			return (error_handler(LEXER_ERROR, cpy(*p)));
+		if ((**cur == '>' || **cur == '<') && (**p == '<' || (**p == '>' && *(*p + 1) != '>')))
+			return (error_handler(LEXER_ERROR, cpy(*p)));
+		if ((**cur == '>' || **cur == '<') && **p == '>' && *(*p + 1) == '>')
 		{
-			if (*p - 256 == '>' && c - 256 == '>')
-				*p = c + 256;
-			else
-				return (-1);
+			++*p;
+			return (error_handler(LEXER_ERROR, ">>"));
 		}
 	}
-	if (*p < 512)
-		*p = c;
+	*cur = *p;
+//	++*p;
+	*n = 0;
 	return (0);
 }
 
-static int		step(char *line, int *i, int flag)
+static int	step(char **p, int flag)
 {
-	if (line[*i] == '\\' && (!(flag & 1) || (flag & 2
-		&& (line[*i + 1] == '\\' || line[*i + 1] == '\"'))))
+	if (**p == '\\' && (!(flag & 1)
+		|| (flag & 2 && (*(*p + 1) == '\\' || *(*p + 1) == '\"'))))
 	{
-		++*i;
-		if (line[(*i)++])
-			return (line[*i - 1]);
-		else
-			return (256);
+		++*p;
+		return (!**p);
 	}
-	if (((line[*i] == '\'' || line[*i] == '\"' || line[*i] == '|'
-		|| line[*i] == ';' || line[*i] == '<' || line[*i] == '>')
+	if (((**p == '\'' || **p == '\"' || **p == '|' || **p == ';'
+		|| **p == '<' || **p == '>')
 		&& !(flag & 1) && !(flag & 2))
-		|| ((flag & 1) && line[*i] == '\'')
-		|| ((flag & 2) && (line[*i] == '\"' || line[*i] == '\\')))
-		return (line[(*i)++] + 256);
-	return (line[(*i)++]);
+		|| ((flag & 1) && **p == '\'')
+		|| ((flag & 2) && **p == '\"'))
+		return (1);
+	return (0);
 }
 
-int		lexer(char *line)
+int			lexer(char *line)
 {
-	int		i;
-	int		c;
-	int		p;
+	char	*p;
+	char	*cur;
 	int		flag;
+	int		tmp;
+	int		n;
 
-	i = 0;
-	p = 0;
+	p = line;
+	cur = 0;
 	flag = 0;
-	while (line[i] == ' ')
-		i++;
-	while ((c = step(line, &i, flag)) != 0)
+	n = 0;
+	while (*p == ' ')
+		p++;
+	while (1)
 	{
-		while (line[i] == ' ' && !flag)
-			i++;
-		if (conflicts(c, &p))
-			return (-1);
-		(c == '\'' + 256 && !(flag & 2)) ? flag ^= 1 : 0;
-		(c == '\"' + 256 && !(flag & 1)) ? flag ^= 2 : 0;
+		tmp = step(&p, flag);
+		if (*p == 0)
+			break;
+		while (*p == ' ')
+			p++;
+		(cur && *cur == '\'' && !(flag & 2)) ? flag ^= 1 : 0;
+		(cur && *cur == '\"' && !(flag & 1)) ? flag ^= 2 : 0;
+		if (tmp)
+			conflicts(&p, &cur, &n);
+		else
+			n++;
+		++p;
 	}
-	if (p == 256 || p - 256 == '|' || p - 256 == '<' || p - 256 == '>' || flag)
-		return (-1);
+	if (cur && (*cur == '|' || flag))
+		return (error_handler(LEXER_ERROR, cpy(cur)));
+	else if (cur && (*cur == '<' || *cur == '>'))
+		return (error_handler(LEXER_ERROR, "newline"));
 	return (0);
 }
