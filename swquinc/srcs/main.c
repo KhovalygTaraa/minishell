@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 20:45:42 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/24 20:20:45 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int		minishell(t_main *main, char *line, int argc, char **argv)
 			var_handler(main, main->cmd->cmd, 1);
 		if (main->cmd->red)
 			var_handler(main, main->cmd->red, 0);
-		executor(main);
+		if (main->cmd->cmd)
+			executor(main);
 	}
 	return (0);
 }
