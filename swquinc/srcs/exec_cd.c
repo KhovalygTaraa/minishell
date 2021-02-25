@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:39:55 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 18:58:35 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/26 01:43:39 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static char		*set_pwd(t_main *main)
 {
-	// char	*pwd;
 	char	*oldpwd;
 	char	buf[PATH_MAX];
 	int		i;
@@ -38,10 +37,24 @@ static char		*set_pwd(t_main *main)
 	return (oldpwd);
 }
 
+static void		create_oldpwd(t_main *main, char *oldpwd)
+{
+	t_cmd	cmd;
+
+	if (!(cmd.cmd = malloc(sizeof(char*) * 3)))
+		error_handler(MALLOC, "create_oldpwd");
+	cmd.cmd[0] = "export";
+	if (!(cmd.cmd[1] = ft_strjoin("OLD", oldpwd)))
+		error_handler(MALLOC, "create_oldpwd");
+	cmd.cmd[2] = NULL;
+	exec_export(main, &cmd);
+	free(cmd.cmd);
+}
+
 static int		set_oldpwd(t_main *main, char *oldpwd)
 {
-	int		i;
-	t_cmd	cmd;
+	int			i;
+	static int	flag;
 
 	i = 0;
 	while (main->env[i] != NULL)
@@ -49,20 +62,42 @@ static int		set_oldpwd(t_main *main, char *oldpwd)
 		if (ft_strncmp(main->env[i], "OLDPWD=", 7) == 0)
 		{
 			free(main->env[i]);
-			main->env[i] = ft_strjoin("OLD", oldpwd);
+			if (!(main->env[i] = ft_strjoin("OLD", oldpwd)))
+				error_handler(MALLOC, "set_pwd");
 			free(oldpwd);
 			return (0);
 		}
 		i++;
 	}
-	if (!(cmd.cmd = malloc(sizeof(char*) * 4)))
-		error_handler(MALLOC, "cd_set_oldpwd");
-	cmd.cmd[0] = "export";
-	cmd.cmd[1] = ft_strjoin("OLD", oldpwd);
-	exec_export(main, &cmd);
-	free(cmd.cmd[1]);
-	free(cmd.cmd);
+	if (flag == 0)
+	{
+		create_oldpwd(main, oldpwd);
+		flag = 1;
+	}
+	free(main->oldpwd);
+	main->oldpwd = oldpwd;
 	return (0);
+}
+
+static char		*cd_minus(t_main *main)
+{
+	char	*oldpwd;
+
+	if (main->oldpwd == NULL)
+	{
+		error_handler(OLDPWD_NOT_SET, "cd: ");
+		return (NULL);
+	}
+	if (chdir(main->oldpwd + 4) == -1)
+	{
+		error_handler(CHDIR_ERROR, main->oldpwd + 4);
+		return (NULL);
+	}
+	if ((oldpwd = set_pwd(main)) == NULL)
+		return (NULL);
+	ft_putstr_fd(main->oldpwd + 4, 1);
+	ft_putchar_fd('\n', 1);
+	return (oldpwd);
 }
 
 /*
@@ -90,6 +125,8 @@ int				exec_cd(t_main *main, t_cmd *cmd)
 		if ((oldpwd = set_pwd(main)) == NULL)
 			return (-1);
 	}
+	else if (cmd->cmd[1] != NULL && ft_strcmp(cmd->cmd[1], "-") == 0)
+		oldpwd = cd_minus(main);
 	else
 	{
 		if (chdir(cmd->cmd[1]) == -1)

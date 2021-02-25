@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:41:02 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 15:47:37 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/26 01:24:55 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ static void		remove_var(t_main *main, char *var)
 	int		i;
 	int		a;
 
+	if (ft_strcmp(var, "OLDPWD") == 0)
+	{
+		free(main->oldpwd);
+		main->oldpwd = NULL;
+	}
 	if (!(var = ft_strjoin(var, "=")))
 		error_handler(MALLOC, "unset_remove_var");
 	a = ft_strlen(var);

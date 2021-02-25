@@ -1,12 +1,14 @@
 #include "minishell.h"
 
-static char *cpy(const char *p)
+static char	*cpy(const char *p)
 {
 	char	*s;
 
-	s = malloc(2);
-	s[0] = *p;
-	s[1] = 0;
+	s = malloc(4);
+	s[0] = '`';
+	s[1] = *p;
+	s[2] = '\'';
+	s[3] = 0;
 	return (s);
 }
 
@@ -14,20 +16,26 @@ static int	conflicts(char **p, char **cur, int *n)
 {
 	if (!*n)
 	{
-		if ((**p == '|' || **p == ';') && *cur == 0 && !*n)
+		if ((**p == '|' || **p == ';')
+			&& ((!*cur && !*n) || (**cur != '\'' && **cur != '\"')))
+		{
+			if (**p == ';' && (*(*p + 1) == ';' || (*cur && **cur == ';')))
+				return (error_handler(LEXER_ERROR, "`;;\'"));
 			return (error_handler(LEXER_ERROR, cpy(*p)));
-		if ((**p == '|' || **p == ';') && **cur != '\'' && **cur != '\"')
+		}
+		if (*cur && (**cur == '>' || **cur == '<')
+			&& (**p == '<' || (**p == '>' && *(*p + 1) != '>')))
 			return (error_handler(LEXER_ERROR, cpy(*p)));
-		if ((**cur == '>' || **cur == '<') && (**p == '<' || (**p == '>' && *(*p + 1) != '>')))
-			return (error_handler(LEXER_ERROR, cpy(*p)));
-		if ((**cur == '>' || **cur == '<') && **p == '>' && *(*p + 1) == '>')
+		if (*cur && (**cur == '>' || **cur == '<')
+			&& **p == '>' && *(*p + 1) == '>')
 		{
 			++*p;
-			return (error_handler(LEXER_ERROR, ">>"));
+			return (error_handler(LEXER_ERROR, "`>>\'"));
 		}
 	}
+	if (!*cur && **p == '>' && *(*p + 1) == '>')
+		++*p;
 	*cur = *p;
-//	++*p;
 	*n = 0;
 	return (0);
 }
@@ -49,38 +57,49 @@ static int	step(char **p, int flag)
 	return (0);
 }
 
+static int	loop(char **p, char **cur, int *flag)
+{
+	int		tmp;
+	int		n;
+
+	n = 0;
+	while (1)
+	{
+		tmp = step(p, *flag);
+		if (**p == 0)
+			break ;
+		while (**p == ' ')
+			++*p;
+		(**p == '\'' && tmp) ? *flag ^= 1 : 0;
+		(**p == '\"' && tmp) ? *flag ^= 2 : 0;
+		if (tmp)
+		{
+			if (conflicts(p, cur, &n) == -1)
+				return (-1);
+		}
+		else
+			++n;
+		++*p;
+	}
+	return (0);
+}
+
 int			lexer(char *line)
 {
 	char	*p;
 	char	*cur;
 	int		flag;
-	int		tmp;
-	int		n;
 
 	p = line;
 	cur = 0;
 	flag = 0;
-	n = 0;
 	while (*p == ' ')
 		p++;
-	while (1)
-	{
-		tmp = step(&p, flag);
-		if (*p == 0)
-			break;
-		while (*p == ' ')
-			p++;
-		(cur && *cur == '\'' && !(flag & 2)) ? flag ^= 1 : 0;
-		(cur && *cur == '\"' && !(flag & 1)) ? flag ^= 2 : 0;
-		if (tmp)
-			conflicts(&p, &cur, &n);
-		else
-			n++;
-		++p;
-	}
+	if (loop(&p, &cur, &flag) == -1)
+		return (-1);
 	if (cur && (*cur == '|' || flag))
 		return (error_handler(LEXER_ERROR, cpy(cur)));
 	else if (cur && (*cur == '<' || *cur == '>'))
-		return (error_handler(LEXER_ERROR, "newline"));
+		return (error_handler(LEXER_ERROR, "`newline\'"));
 	return (0);
 }

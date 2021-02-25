@@ -6,16 +6,11 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/25 01:57:15 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/25 02:06:30 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static char		**tilda_handler(t_main *main, char *tilda, char *origin, char **res)
-// {
-
-// }
 
 static char		*put_var(t_main *main, char *var, char **origin)
 {
@@ -111,6 +106,5 @@ int		var_handler(t_main *main, char **src, int a)
 				replace_cmd(&main->cmd->red[i], res);
 		}
 	}
-	// tilda_handler(main, tmp, tmp, res);
 	return (0);
 }

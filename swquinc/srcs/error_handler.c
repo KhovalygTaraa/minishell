@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/25 00:16:08 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/26 01:44:51 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static void		error_printer(int code, char *str)
 	}
 	else if (code == HOME_NOT_SET)
 		ft_perror2(NULL, str, "HOME not set");
+	else if (code == OLDPWD_NOT_SET)
+		ft_perror2(NULL, str, "OLDPWD not set");
 	else if (code == EXPORT_ERROR)
 		ft_perror2(str, "export: ", "not a valid identifier");
 	else if (code == UNSET_ERROR)
@@ -62,7 +64,8 @@ static void		error_printer(int code, char *str)
 int		error_handler(int code, char *str)
 {
 	error_printer(code, str);
-	if (code == HOME_NOT_SET || code == CHDIR_ERROR || code == EXPORT_ERROR || code == UNSET_ERROR)
+	if (code == HOME_NOT_SET || code == CHDIR_ERROR || code == EXPORT_ERROR
+	|| code == UNSET_ERROR || code == LEXER_ERROR || code == OLDPWD_NOT_SET)
 	{
 		g_error = 1;
 		return (-1);

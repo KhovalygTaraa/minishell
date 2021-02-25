@@ -6,14 +6,18 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/25 00:44:16 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/26 02:06:37 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void		init(t_main *main, char **env)
+static void		init(t_main *main, char **env, int argc, char **argv)
 {
+	t_cmd	cmd;
+
+	(void)argc;
+	(void)argv;
 	ft_bzero(main, sizeof(t_main));
 	if (!(main->env = ft_2arraydup(env)))
 		error_handler(MALLOC, "init");
@@ -21,16 +25,21 @@ static void		init(t_main *main, char **env)
 		error_handler(DUP_ERROR, "init2");
 	if (!(main->stdin = dup(0)))
 		error_handler(DUP_ERROR, "init3");
+	main->oldpwd = NULL;
+	cmd.cmd = malloc(sizeof(char *) * 3);
+	cmd.cmd[0] = "unset";
+	cmd.cmd[1] = "OLDPWD";
+	cmd.cmd[2] = NULL;
+	exec_unset(main, &cmd);
+	free (cmd.cmd);
 	g_error = 0;
 	g_pid = 0;
 }
 
-static int		minishell(t_main *main, char *line, int argc, char **argv)
+static int		minishell(t_main *main, char *line)
 {
 	int		i;
 
-	(void)argc;
-	(void)argv;
 	i = 1;
 	if (line == NULL || line[0] == '\0')
 		return (0);
@@ -41,7 +50,8 @@ static int		minishell(t_main *main, char *line, int argc, char **argv)
 	{
 		parse_env(main);
 		free(main->cmd);
-		lexer(line);
+		if (lexer(line) == -1)
+			return (0);
 		i = parser(&main->cmd, line);
 		if (main->cmd->red)
 			parse_redir(main);
@@ -94,7 +104,7 @@ int     main(int argc, char **argv, char **env)
 	t_main  main;
 	int		fildes[2];
 
-	init(&main, env);
+	init(&main, env, argc, argv);
 	while (main.exit == 0)
 	{
 		if (signal(SIGQUIT, ignore_squit) == SIG_ERR)
@@ -111,7 +121,7 @@ int     main(int argc, char **argv, char **env)
 		else
 			line = get_line(fildes, 0);
 		close (fildes[0]);
-		minishell(&main, line, argc, argv);
+		minishell(&main, line);
 		free(line);
 	}
 	return (0);
