@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:40:35 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/26 02:00:50 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/28 13:04:05 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ static int		redefine_var(t_main *main, char *var)
 			return (1);
 		}
 	}
+	free(link);
 	return (0);
 }
 

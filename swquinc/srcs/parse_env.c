@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 17:00:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 18:57:08 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/28 13:36:10 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,10 @@ static int		parse_path(t_main *main)
 
 int			parse_env(t_main *main)
 {
+	if (main->path != NULL)
+		ft_free_2array(main->path);
+	free(main->pwd);
+	free(main->home);
 	parse_path(main);
 	parse_pwd(main);
 	parse_home(main);

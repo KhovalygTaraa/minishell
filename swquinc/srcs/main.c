@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/26 02:06:37 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/28 14:00:10 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void		init(t_main *main, char **env, int argc, char **argv)
 		error_handler(DUP_ERROR, "init2");
 	if (!(main->stdin = dup(0)))
 		error_handler(DUP_ERROR, "init3");
-	main->oldpwd = NULL;
 	cmd.cmd = malloc(sizeof(char *) * 3);
 	cmd.cmd[0] = "unset";
 	cmd.cmd[1] = "OLDPWD";
@@ -34,6 +33,10 @@ static void		init(t_main *main, char **env, int argc, char **argv)
 	free (cmd.cmd);
 	g_error = 0;
 	g_pid = 0;
+	// if (signal(SIGCHLD, SIG_DFL) == SIG_ERR)
+	// 	error_handler(SIGNAL_ERROR, "init");
+	// if (signal(SIGCHLD, SIG_DFL) == SIG_ERR)
+	// 	error_handler(SIGNAL_ERROR, "init");
 }
 
 static int		minishell(t_main *main, char *line)
@@ -124,5 +127,6 @@ int     main(int argc, char **argv, char **env)
 		minishell(&main, line);
 		free(line);
 	}
+	sleep(100);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:23:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 15:39:47 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/28 13:45:11 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ char	**ft_stradd(char **array, char *str)
 			i++;
 		}
 	}
-	// if (!(new[i] = ft_strdup(str)))
-	// 	return (NULL);
-	new[i] = str;
+	if (!(new[i] = ft_strdup(str)))
+		return (NULL);
+	free(str);
+	// new[i] = str;
 	new[i + 1] = NULL;
 	free(array);
 	return (new);

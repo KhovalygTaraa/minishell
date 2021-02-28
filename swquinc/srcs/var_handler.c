@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/25 02:06:30 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/28 14:21:36 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 {
 	int		a;
 	int		b;
+	char	*tmp;
 
 	b = 0;
 	a = 0;
@@ -55,9 +56,10 @@ static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 		{
 			if (!(res = ft_stradd(res, ft_substr(dollar, 0, b - 2))))
 				error_handler(MALLOC, "var_seeker");
-			if (!(res = ft_stradd(res, put_var(main, origin + a + 1, &dollar))))
+			if (!(res = ft_stradd(res, put_var(main, origin + a + 1, &tmp))))
 				error_handler(MALLOC, "var_seeker");
-			origin = dollar;
+			origin = tmp;
+			dollar = tmp;
 		}
 		else
 			origin = origin + a + 1;
@@ -74,8 +76,8 @@ static void		replace_cmd(char **str, char **new_str)
 	res = new_str[i];
 	while (new_str[i + 1] != NULL)
 	{
-		res = ft_strjoin(res, new_str[i + 1]);
-		free(new_str[i]);
+		res = ft_strjoin_free(res, new_str[i + 1]);
+		free(new_str[i + 1]);
 		i++;
 	}
 	free(new_str);
@@ -105,6 +107,8 @@ int		var_handler(t_main *main, char **src, int a)
 			else
 				replace_cmd(&main->cmd->red[i], res);
 		}
+		else
+			ft_free_2array(res);
 	}
 	return (0);
 }
