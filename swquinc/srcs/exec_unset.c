@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:41:02 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/26 01:24:55 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/03 21:24:43 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void		defined(t_main *main, int i, int a)
 	k = 0;
 	while (main->env[k] != NULL)
 		k++;
-	if (!(new_env = malloc(sizeof(char*) * k)))
+	if (!(new_env = malloc(sizeof(char*) * (k))))
 		error_handler(MALLOC, "unset_if_defined");
 	a = -1;
 	k = -1;
@@ -28,13 +28,20 @@ static void		defined(t_main *main, int i, int a)
 	{
 		if (a == i)
 		{
-			free(main->env[i]);
+			// free(main->env[i]);
+			// main->env[i] = NULL;
 			a++;
 		}
-		new_env[++k] = main->env[a];
+		new_env[++k] = ft_strdup(main->env[a]);
+		if (main->env[a] == NULL)
+		{
+			a--;
+		}
 	}
-	free(main->env);
-	new_env[++k] = NULL;
+	// free(main->env);
+	ft_free_2array(main->env);
+	// free(new_env[k]);
+	new_env[k] = NULL;
 	main->env = new_env;
 }
 

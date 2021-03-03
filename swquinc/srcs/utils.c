@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 16:23:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/28 13:45:11 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/03 15:02:33 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@ void	ft_free_2array(char **array)
 	int		i;
 
 	i = 0;
-	while (array[i] != NULL)
+	if (array)
 	{
-		free(array[i]);
-		i++;
+		while (array[i] != NULL)
+		{
+			if (array[i])
+				free(array[i]);
+			i++;
+		}
+		free(array);
 	}
-	free(array);
 }
 
 int		ft_strchr_index(const char *s, int c)
@@ -53,7 +57,7 @@ char	**ft_stradd(char **array, char *str)
 	char	**new;
 
 	if (str == NULL)
-		return (NULL);
+		return (array);
 	i = 0;
 	while (array[i] != NULL)
 		i++;
@@ -64,16 +68,17 @@ char	**ft_stradd(char **array, char *str)
 	{
 		while (array[i] != NULL)
 		{
-			new[i] = array[i];
+			new[i] = ft_strdup(array[i]);
 			i++;
 		}
 	}
 	if (!(new[i] = ft_strdup(str)))
 		return (NULL);
-	free(str);
+	// free(str);
 	// new[i] = str;
 	new[i + 1] = NULL;
-	free(array);
+	// free(array);
+	ft_free_2array(array);
 	return (new);
 }
 

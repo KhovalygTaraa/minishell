@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 20:31:55 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/02 05:56:58 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ static int		exec_bin_path(t_main *main, t_cmd *cmd)
 				error_handler(EXECVE, path[i]);
 		}
 	i = -1;
-	while (path[++i])
-		free(path[i]);
+	ft_free_2array(path);
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:39:55 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/26 01:43:39 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/02 07:08:34 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ static void		create_oldpwd(t_main *main, char *oldpwd)
 		error_handler(MALLOC, "create_oldpwd");
 	cmd.cmd[2] = NULL;
 	exec_export(main, &cmd);
+	free(cmd.cmd[1]);
 	free(cmd.cmd);
+	free(oldpwd);
 }
 
 static int		set_oldpwd(t_main *main, char *oldpwd)

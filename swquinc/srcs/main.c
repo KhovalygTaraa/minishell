@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/28 14:00:10 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/02 15:20:42 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void		init(t_main *main, char **env, int argc, char **argv)
 	cmd.cmd[1] = "OLDPWD";
 	cmd.cmd[2] = NULL;
 	exec_unset(main, &cmd);
-	free (cmd.cmd);
+	free(cmd.cmd);
 	g_error = 0;
 	g_pid = 0;
 	// if (signal(SIGCHLD, SIG_DFL) == SIG_ERR)
@@ -52,7 +52,6 @@ static int		minishell(t_main *main, char *line)
 	while(i != 0)
 	{
 		parse_env(main);
-		free(main->cmd);
 		if (lexer(line) == -1)
 			return (0);
 		i = parser(&main->cmd, line);
@@ -65,6 +64,11 @@ static int		minishell(t_main *main, char *line)
 		if (main->cmd->cmd)
 			executor(main);
 	}
+	if (main->cmd->cmd)
+		ft_free_2array(main->cmd->cmd);
+	if (main->cmd->red)
+		ft_free_2array(main->cmd->red);
+	free(main->cmd);
 	return (0);
 }
 

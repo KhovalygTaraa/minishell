@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 19:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/28 13:38:44 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/02/25 00:23:45 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,15 @@ int			parser(t_cmd **cmd, char *line)
 	static char	*p;
 	int			type;
 
-	if (!p)
-		p = line;
+	if ((*cmd)->cmd)
+		ft_free_2array((*cmd)->cmd);
+	if ((*cmd)->red)
+		ft_free_2array((*cmd)->red);
+	free(*cmd);
+	!p ? (p = line) : 0;
 	s = 0;
 	if (!(*cmd = (t_cmd *)malloc(sizeof(t_cmd))))
-		error_handler(MALLOC, "parser");
+		return (0);
 	ft_bzero(*cmd, sizeof(t_cmd));
 	while (1)
 	{

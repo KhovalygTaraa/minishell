@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/28 14:21:36 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/03 14:45:53 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 	int		a;
 	int		b;
 	char	*tmp;
+	char	*clean;
 
 	b = 0;
 	a = 0;
@@ -54,10 +55,12 @@ static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 		b = b + a + 2;
 		if (origin[++a] == 1)
 		{
-			if (!(res = ft_stradd(res, ft_substr(dollar, 0, b - 2))))
+			if (!(res = ft_stradd(res, (clean = ft_substr(dollar, 0, b - 2)))))
 				error_handler(MALLOC, "var_seeker");
-			if (!(res = ft_stradd(res, put_var(main, origin + a + 1, &tmp))))
+			free(clean);
+			if (!(res = ft_stradd(res, (clean = put_var(main, origin + a + 1, &tmp)))))
 				error_handler(MALLOC, "var_seeker");
+			free(clean);
 			origin = tmp;
 			dollar = tmp;
 		}

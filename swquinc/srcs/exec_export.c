@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:40:35 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/28 13:04:05 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/03 15:33:44 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ int				exec_export(t_main *main, t_cmd *cmd)
 			error_handler(MALLOC, "exec_export");
 		sort_by_alphabet(sorted_env);
 		print_mod_sorted_env(sorted_env);
+		free(sorted_env);
 	}
 	else
 		res = add_vars(main, cmd);
