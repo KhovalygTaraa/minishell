@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 15:52:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/13 17:16:55 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 01:12:04 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ static int	standart_output(t_main *main, int *i, char **red)
 	{
 		a++;
 		if ((fd = open(red[a], O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
-			error_handler(OPEN_ERROR, red[a]);
+			return (error_handler(OPEN_ERROR, red[a]));
 		dup2(fd, main->relink_fd);
 	}
 	else
 	{
 		a++;
 		if ((fd = open(red[a], O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
-			error_handler(OPEN_ERROR, red[a]);
+			return (error_handler(OPEN_ERROR, red[a]));
 		dup2(fd, main->relink_fd);
 	}
 	if (main->relink_fd == 1)
@@ -72,7 +72,7 @@ static int	standart_input(t_main *main, int *i, char **red)
 	a = *i;
 	a++;
 	if ((fd = open(red[a], O_RDONLY, 0644)) < 0)
-		error_handler(OPEN_ERROR, red[a]);
+		return (error_handler(OPEN_ERROR, red[a]));
 	dup2(fd, main->relink_fd);
 	if (main->relink_fd == 0)
 		main->is_stdin_taken = 1;
@@ -136,7 +136,8 @@ int			executor(t_main *main)
 		if (main->is_stdout_taken == 0)
 			dup2(main->fildes[1], 1);
 	}
-	cmd_selector(main, main->cmd);
+	if (main->cmd->cmd)
+		cmd_selector(main, main->cmd);
 	dup2(main->stdout, 1);
 	dup2(main->stdin, 0);
 	return (1);

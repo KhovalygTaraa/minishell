@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:41:02 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/03 21:24:43 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 05:06:23 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static void		defined(t_main *main, int i, int a)
 	{
 		if (a == i)
 		{
-			// free(main->env[i]);
-			// main->env[i] = NULL;
 			a++;
 		}
 		new_env[++k] = ft_strdup(main->env[a]);
@@ -38,10 +36,9 @@ static void		defined(t_main *main, int i, int a)
 			a--;
 		}
 	}
-	// free(main->env);
 	ft_free_2array(main->env);
-	// free(new_env[k]);
-	new_env[k] = NULL;
+	if (new_env[k] != NULL)
+		new_env[++k] = NULL;
 	main->env = new_env;
 }
 
@@ -54,6 +51,11 @@ static void		remove_var(t_main *main, char *var)
 	{
 		free(main->oldpwd);
 		main->oldpwd = NULL;
+	}
+	if (ft_strcmp(var, "PATH") == 0)
+	{
+		ft_free_2array(main->path);
+		main->path = NULL;
 	}
 	if (!(var = ft_strjoin(var, "=")))
 		error_handler(MALLOC, "unset_remove_var");

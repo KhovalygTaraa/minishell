@@ -16,16 +16,17 @@ static int	conflicts(char **p, char **cur, int *n)
 {
 	if (!*n)
 	{
-		if ((**p == '|' || **p == ';')
-			&& ((!*cur && !*n) || (**cur != '\'' && **cur != '\"')))
-		{
-			if (**p == ';' && (*(*p + 1) == ';' || (*cur && **cur == ';')))
-				return (error_handler(LEXER_ERROR, "`;;\'"));
-			return (error_handler(LEXER_ERROR, cpy(*p)));
-		}
+		if (**p == '|' && (!*cur && !*n))
+			return (error_handler(LEXER_ERROR, "`|\'"));
+		if (**p == ';' && *(*p + 1) == ';')
+			return (error_handler(LEXER_ERROR, "`;;\'"));
+		if (**p == ';' && (!*cur && !*n))
+			return (error_handler(LEXER_ERROR, "`;'"));
+		if ((**p == '|' || **p == ';') && (**cur != '\'' && **cur != '\"'))
+			return (error_handler(LEXER_ERROR_FREE, cpy(*p)));
 		if (*cur && (**cur == '>' || **cur == '<')
 			&& (**p == '<' || (**p == '>' && *(*p + 1) != '>')))
-			return (error_handler(LEXER_ERROR, cpy(*p)));
+			return (error_handler(LEXER_ERROR_FREE, cpy(*p)));
 		if (*cur && (**cur == '>' || **cur == '<')
 			&& **p == '>' && *(*p + 1) == '>')
 		{
@@ -98,8 +99,14 @@ int			lexer(char *line)
 	if (loop(&p, &cur, &flag) == -1)
 		return (-1);
 	if (cur && (*cur == '|' || flag))
-		return (error_handler(LEXER_ERROR, cpy(cur)));
+		return (error_handler(LEXER_ERROR_FREE, cpy(cur)));
 	else if (cur && (*cur == '<' || *cur == '>'))
-		return (error_handler(LEXER_ERROR, "`newline\'"));
+	{
+		p = cur;
+		while (*++p == ' ')
+			;
+		if (*p == '\0')
+			return (error_handler(LEXER_ERROR, "`newline\'"));
+	}
 	return (0);
 }

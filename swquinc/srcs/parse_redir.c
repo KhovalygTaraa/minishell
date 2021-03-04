@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 12:14:22 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/14 19:49:53 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 00:27:57 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,25 @@ static char		*parse_num(char *src)
 	return (res);
 }
 
+static char		**add(t_main *main, int i, char **res)
+{
+	char *clean;
+
+	if (main->cmd->red[i][0] >= '0' && main->cmd->red[i][0] <= '9')
+	{
+		if (!(res = ft_stradd(res, (clean = parse_num(main->cmd->red[i])))))
+			error_handler(MALLOC, "parse_redir2");
+		free(clean);
+	}
+	if (!(res = ft_stradd(res, (clean = parse_symb(main->cmd->red[i])))))
+			error_handler(MALLOC, "parse_redir3");
+	free(clean);
+	if (!(res = ft_stradd(res, (clean = parse_filename(main->cmd->red[i])))))
+			error_handler(MALLOC, "parse_redir2");
+	free(clean);
+	return (res);	
+}
+
 int		parse_redir(t_main *main)
 {
 	char	**res;
@@ -83,13 +102,14 @@ int		parse_redir(t_main *main)
 	res[0] = NULL;
 	while (main->cmd->red[i] != NULL)
 	{
-		if (main->cmd->red[i][0] >= '0' && main->cmd->red[i][0] <= '9')
-			if (!(res = ft_stradd(res, parse_num(main->cmd->red[i]))))
-				error_handler(MALLOC, "parse_redir2");
-		if (!(res = ft_stradd(res, parse_symb(main->cmd->red[i]))))
-				error_handler(MALLOC, "parse_redir3");
-		if (!(res = ft_stradd(res, parse_filename(main->cmd->red[i]))))
-				error_handler(MALLOC, "parse_redir2");
+		res = add(main, i, res);
+		// if (main->cmd->red[i][0] >= '0' && main->cmd->red[i][0] <= '9')
+		// 	if (!(res = ft_stradd(res, parse_num(main->cmd->red[i]))))
+		// 		error_handler(MALLOC, "parse_redir2");
+		// if (!(res = ft_stradd(res, parse_symb(main->cmd->red[i]))))
+		// 		error_handler(MALLOC, "parse_redir3");
+		// if (!(res = ft_stradd(res, parse_filename(main->cmd->red[i]))))
+		// 		error_handler(MALLOC, "parse_redir2");
 		i++;
 	}
 	ft_free_2array(main->cmd->red);

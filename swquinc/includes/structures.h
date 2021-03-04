@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/26 02:02:21 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 05:00:43 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # define WAIT_ERROR 64
 # define LEXER_ERROR 65
 # define OLDPWD_NOT_SET 66
+# define LEXER_ERROR_FREE 67
+# define EXIT_ERROR 68
+# define EXIT_ERROR2 69
 
 pid_t			g_pid;
 int				g_error;

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/02 05:56:58 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 04: 1:33by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int		exec_bin_path(t_main *main, t_cmd *cmd)
 	char			**path;
 
 	i = 0;
+	if (!main->path)
+		return (-1);
 	while (main->path[i])
 		i++;
 	if (!(path = malloc(sizeof(char*) * (i + 1))))
@@ -35,7 +37,6 @@ static int		exec_bin_path(t_main *main, t_cmd *cmd)
 			if (execve(path[i], cmd->cmd++, main->env) == -1)
 				error_handler(EXECVE, path[i]);
 		}
-	i = -1;
 	ft_free_2array(path);
 	return (-1);
 }
@@ -61,6 +62,7 @@ static void		exec_absolute_path(t_main *main, t_cmd *cmd)
 	char			*path;
 	struct stat		buf;
 
+	buf.st_mode = 0;
 	path = cmd->cmd[0];
 	if (stat(path, &buf) == -1)
 	{
@@ -69,7 +71,7 @@ static void		exec_absolute_path(t_main *main, t_cmd *cmd)
 		else
 			error_handler(STAT, path);
 	}
-	if (execve(path, cmd->cmd++, main->env) == -1)
+	if (execve(path, ++cmd->cmd, main->env) == -1)
 		error_handler(EXECVE, path);
 }
 

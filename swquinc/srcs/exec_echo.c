@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:39:27 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/24 20:39:06 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 03:17:33 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,22 @@ void	exec_echo(t_main *main, t_cmd *cmd)
 	(void)main;
 	flag = 0;
 	i = 1;
-	if (cmd->cmd[i] == NULL)
-		flag = 0;
-	else if (ft_strcmp(cmd->cmd[i], "-n") == 0)
+	if (cmd->cmd && cmd->cmd[i])
 	{
-		flag = 1;
-		i++;
 		if (cmd->cmd[i] == NULL)
-			ft_putstr_fd("", 1);
-	}
-	while (cmd->cmd[i] != NULL)
-	{
-		ft_putstr_fd(cmd->cmd[i], 1);
-		if (cmd->cmd[i + 1] != NULL)
-			ft_putchar_fd(' ', 1);
-		i++;
+			flag = 0;
+		if (ft_strcmp(cmd->cmd[i], "-n") == 0)
+		{
+			flag = 1;
+			if (cmd->cmd[++i] == NULL)
+				ft_putstr_fd("", 1);
+		}
+		while (cmd->cmd[i] != NULL)
+		{
+			ft_putstr_fd(cmd->cmd[i], 1);
+			if (cmd->cmd[i++] != NULL)
+				ft_putchar_fd(' ', 1);
+		}
 	}
 	if (flag == 0)
 		ft_putchar_fd('\n', 1);

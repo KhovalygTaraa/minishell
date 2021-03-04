@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 17:00:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/02/28 13:36:10 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 05:08:34 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		parse_home(t_main *main)
 		return (0);
 	}
 	if (!(path_line = ft_strjoin(path_line, "/")))
-		ft_putendl_fd("Error: malloc error", 1);
+		error_handler(MALLOC, "parse_path");
 	main->home = path_line;
 	return (0);
 }
@@ -49,7 +49,7 @@ static int		parse_pwd(t_main *main)
 		i++;
 	}
 	if (!(path_line = ft_strjoin(path_line, "/")))
-		ft_putendl_fd("Error: malloc error", 1);
+		error_handler(MALLOC, "parse_path");
 	main->pwd = path_line;
 	return (0);
 }
@@ -60,6 +60,7 @@ static int		parse_path(t_main *main)
 	char	*path_line;
 	char	**path;
 
+	path_line = NULL;
 	path = NULL;
 	i = -1;
 	while (main->env[++i])
@@ -68,15 +69,15 @@ static int		parse_path(t_main *main)
 	if (path_line)
 	{
 		if (!(path = ft_split_upd(path_line, ":")))
-			ft_putendl_fd("Error: malloc error", 1);
+			error_handler(MALLOC, "parse_path");
 	}
 	else
-		ft_putendl_fd("Error: PATH didn't exist", 1);
+		return (-1);
 	i = -1;
 	while (path[++i])
 	{
 		if (!(path[i] = ft_strjoin_free(path[i], "/")))
-			ft_putendl_fd("Error: malloc error", 1);
+			error_handler(MALLOC, "parse_path");
 	}
 	main->path = path;
 	return (0);

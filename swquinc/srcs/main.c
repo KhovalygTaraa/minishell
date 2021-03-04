@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/02 15:20:42 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 03:44:25 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ static void		init(t_main *main, char **env, int argc, char **argv)
 static int		minishell(t_main *main, char *line)
 {
 	int		i;
+	int		a;
 
+	a = 0;
 	i = 1;
 	if (line == NULL || line[0] == '\0')
 		return (0);
@@ -53,7 +55,7 @@ static int		minishell(t_main *main, char *line)
 	{
 		parse_env(main);
 		if (lexer(line) == -1)
-			return (0);
+			break ;
 		i = parser(&main->cmd, line);
 		if (main->cmd->red)
 			parse_redir(main);
@@ -61,7 +63,7 @@ static int		minishell(t_main *main, char *line)
 			var_handler(main, main->cmd->cmd, 1);
 		if (main->cmd->red)
 			var_handler(main, main->cmd->red, 0);
-		if (main->cmd->cmd)
+		if (main->cmd)
 			executor(main);
 	}
 	if (main->cmd->cmd)

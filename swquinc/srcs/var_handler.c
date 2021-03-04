@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/03 14:45:53 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 02:00:35 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char		*put_var(t_main *main, char *var, char **origin)
 	i = 0;
 	a = -1;
 	res = NULL;
-	while ((var[i] >= 48 && var[i] <= 57) || (var[i] >= 65 && var[i] <= 90) || (var[i] >= 97 && var[i] <= 122))
+	while ((var[i] >= 48 && var[i] <= 57) || (var[i] >= 65 && var[i] <= 90) || (var[i] >= 97 && var[i] <= 122) || var[i] == '?')
 		i++;
 	*origin = var + i;
 	if (!(var1 = ft_substr(var, 0, i)))
@@ -32,7 +32,7 @@ static char		*put_var(t_main *main, char *var, char **origin)
 			if (!(res = ft_strdup(main->env[a] + i + 1)))
 				error_handler(MALLOC, "put_var");
 	if (ft_strcmp(var1, "?") == 0)
-		if (!(res = ft_strdup(ft_itoa(g_error))))
+		if (!(res = ft_itoa(g_error)))
 			error_handler(MALLOC, "put_var");
 	free(var1);
 	if (res == NULL)
