@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int		check_array(char *str)
+static int	check_array(char *str)
 {
 	int		i;
 
@@ -26,7 +26,7 @@ static int		check_array(char *str)
 	return (1);
 }
 
-void	exec_exit(t_main *main, t_cmd *cmd)
+void		exec_exit(t_main *main, t_cmd *cmd)
 {
 	int		i;
 	int		a;

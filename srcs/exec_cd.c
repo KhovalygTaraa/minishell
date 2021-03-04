@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:39:55 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/02 07:08:34 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 19:59:34 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ static void		create_oldpwd(t_main *main, char *oldpwd)
 
 	if (!(cmd.cmd = malloc(sizeof(char*) * 3)))
 		error_handler(MALLOC, "create_oldpwd");
-	cmd.cmd[0] = "export";
+	cmd.cmd[0] = ft_strdup("export");
 	if (!(cmd.cmd[1] = ft_strjoin("OLD", oldpwd)))
 		error_handler(MALLOC, "create_oldpwd");
 	cmd.cmd[2] = NULL;
 	exec_export(main, &cmd);
-	free(cmd.cmd[1]);
-	free(cmd.cmd);
-	free(oldpwd);
+	ft_free_2array(cmd.cmd);
 }
 
 static int		set_oldpwd(t_main *main, char *oldpwd)
@@ -85,7 +83,7 @@ static char		*cd_minus(t_main *main)
 {
 	char	*oldpwd;
 
-	if (main->oldpwd == NULL)
+	if (!main->oldpwd)
 	{
 		error_handler(OLDPWD_NOT_SET, "cd: ");
 		return (NULL);

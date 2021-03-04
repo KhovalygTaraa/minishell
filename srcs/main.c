@@ -6,13 +6,13 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 03:44:25 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 23:43:05 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void		init(t_main *main, char **env, int argc, char **argv)
+static void	init(t_main *main, char **env, int argc, char **argv)
 {
 	t_cmd	cmd;
 
@@ -33,52 +33,13 @@ static void		init(t_main *main, char **env, int argc, char **argv)
 	free(cmd.cmd);
 	g_error = 0;
 	g_pid = 0;
-	// if (signal(SIGCHLD, SIG_DFL) == SIG_ERR)
-	// 	error_handler(SIGNAL_ERROR, "init");
-	// if (signal(SIGCHLD, SIG_DFL) == SIG_ERR)
-	// 	error_handler(SIGNAL_ERROR, "init");
-}
-
-static int		minishell(t_main *main, char *line)
-{
-	int		i;
-	int		a;
-
-	a = 0;
-	i = 1;
-	if (line == NULL || line[0] == '\0')
-		return (0);
-	if (!(main->cmd = malloc(sizeof(t_cmd))))
-		error_handler(MALLOC, "minishell");
-	ft_bzero(main->cmd, sizeof(t_cmd));
-	while(i != 0)
-	{
-		parse_env(main);
-		if (lexer(line) == -1)
-			break ;
-		i = parser(&main->cmd, line);
-		if (main->cmd->red)
-			parse_redir(main);
-		if (main->cmd->cmd)
-			var_handler(main, main->cmd->cmd, 1);
-		if (main->cmd->red)
-			var_handler(main, main->cmd->red, 0);
-		if (main->cmd)
-			executor(main);
-	}
-	if (main->cmd->cmd)
-		ft_free_2array(main->cmd->cmd);
-	if (main->cmd->red)
-		ft_free_2array(main->cmd->red);
-	free(main->cmd);
-	return (0);
 }
 
 /*
 ** lsof -c - для проверки утечки файловых дескрипторов
 */
 
-static char		*get_line(int *fildes, int i)
+static char	*get_line(int *fildes, int i)
 {
 	char	*line;
 	int		status;
@@ -107,10 +68,55 @@ static char		*get_line(int *fildes, int i)
 	}
 }
 
-int     main(int argc, char **argv, char **env)
+static void	minishell_ext(t_main **main, char **line)
 {
-	char    *line;
-	t_main  main;
+	int		i;
+
+	i = 1;
+	while (i != 0)
+	{
+		parse_env(*main);
+		// if (lexer(*line) == -1)
+			// break ;
+		i = parser(&(*main)->cmd, *line);
+		if ((*main)->cmd->red)
+			parse_redir(*main);
+		if ((*main)->cmd->cmd)
+			var_handler(*main, (*main)->cmd->cmd, 1);
+		if ((*main)->cmd->red)
+			var_handler(*main, (*main)->cmd->red, 0);
+		if ((*main)->cmd)
+			executor(*main);
+	}
+}
+
+static int	minishell(t_main *main, char **line)
+{
+	int		i;
+
+	i = 1;
+	if (*line == NULL || (*line)[0] == '\0')
+	{
+		free(*line);
+		return (0);
+	}
+	if (!(main->cmd = malloc(sizeof(t_cmd))))
+		error_handler(MALLOC, "minishell");
+	ft_bzero(main->cmd, sizeof(t_cmd));
+	minishell_ext(&main, line);
+	if (main->cmd->cmd)
+		ft_free_2array(main->cmd->cmd);
+	if (main->cmd->red)
+		ft_free_2array(main->cmd->red);
+	free(main->cmd);
+	free(*line);
+	return (0);
+}
+
+int			main(int argc, char **argv, char **env)
+{
+	char	*line;
+	t_main	main;
 	int		fildes[2];
 
 	init(&main, env, argc, argv);
@@ -129,10 +135,8 @@ int     main(int argc, char **argv, char **env)
 			error_handler(FORK_ERROR, "main");
 		else
 			line = get_line(fildes, 0);
-		close (fildes[0]);
-		minishell(&main, line);
-		free(line);
+		close(fildes[0]);
+		minishell(&main, &line);
 	}
-	sleep(100);
 	return (0);
 }

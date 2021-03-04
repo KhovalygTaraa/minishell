@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 16:57:40 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 05:00:43 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 21:29:13 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct	s_cmd
 	char		**red;
 }				t_cmd;
 
-typedef struct s_quote
+typedef struct	s_quote
 {
 	char		*line;
 	int			quote;
@@ -52,18 +52,18 @@ typedef struct s_quote
 
 typedef struct	s_main
 {
-	char		**env; // malloced -> main
-	char		**path; //malloced -> parse_env
-	char		*pwd; //malloced -> parse_env
+	char		**env;
+	char		**path;
+	char		*pwd;
 	char		*oldpwd;
-	char		*home; // malloced -> parse_env
+	char		*home;
 	char		**export;
-	int			exit; //  временная переменная, забыл для чего это
-	int			fildes[2]; // for pipe
-	int			is_stdout_taken; // for pipe
-	int			is_stdin_taken; // for pipe
-	int			stdout; // стандартный вывод нужно сохранить
-	int			stdin; // стандартный ввод нужно сохранить
+	int			exit;
+	int			fildes[2];
+	int			is_stdout_taken;
+	int			is_stdin_taken;
+	int			stdout;
+	int			stdin;
 	int			relink_fd;
 	t_list		*for_quotes;
 	t_cmd		*cmd;

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int		parse_home(t_main *main)
+static int	parse_home(t_main *main)
 {
 	int		i;
 	char	*path_line;
@@ -36,7 +36,7 @@ static int		parse_home(t_main *main)
 	return (0);
 }
 
-static int		parse_pwd(t_main *main)
+static int	parse_pwd(t_main *main)
 {
 	int		i;
 	char	*path_line;
@@ -54,7 +54,7 @@ static int		parse_pwd(t_main *main)
 	return (0);
 }
 
-static int		parse_path(t_main *main)
+static int	parse_path(t_main *main)
 {
 	int		i;
 	char	*path_line;

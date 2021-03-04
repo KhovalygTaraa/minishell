@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 15:52:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 01:12:04 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/04 23:41:22 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int			executor(t_main *main)
 		if (main->is_stdout_taken == 0)
 			dup2(main->fildes[1], 1);
 	}
-	if (main->cmd->cmd)
+	if (main->cmd->cmd && main->cmd->pipe == 0)
 		cmd_selector(main, main->cmd);
 	dup2(main->stdout, 1);
 	dup2(main->stdin, 0);

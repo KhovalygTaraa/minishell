@@ -12,7 +12,8 @@
 
 #include "minishell.h"
 
-static void		ft_perror2(const char *value, const char *command_name, const char *strerror)
+static void	ft_perror2(const char *value, const char *command_name,
+						const char *strerror)
 {
 	if (strerror == NULL)
 		return ;
@@ -32,7 +33,8 @@ static void		ft_perror2(const char *value, const char *command_name, const char 
 	ft_putchar_fd('\n', 2);
 }
 
-static void		ft_perror3(const char *value, const char *command_name, const char *strerror)
+static void	ft_perror3(const char *value, const char *command_name,
+						const char *strerror)
 {
 	if (strerror == NULL)
 		return ;
@@ -50,9 +52,29 @@ static void		ft_perror3(const char *value, const char *command_name, const char 
 	ft_putchar_fd('\n', 2);
 }
 
-static void		error_printer(int code, char *str)
+static void	error_printer_ext(int code, char *str)
 {
-	if (code == MALLOC || code == EXECVE || code == CHDIR_ERROR || code == OPEN_ERROR || code == DUP_ERROR || code == PIPE_ERROR || code == FORK_ERROR || code == SIGNAL_ERROR || code == WAIT_ERROR)
+	if (code == HOME_NOT_SET)
+		ft_perror2(NULL, str, "HOME not set");
+	else if (code == OLDPWD_NOT_SET)
+		ft_perror2(NULL, str, "OLDPWD not set");
+	else if (code == EXPORT_ERROR)
+		ft_perror2(str, "export: ", "not a valid identifier");
+	else if (code == UNSET_ERROR)
+		ft_perror2(str, "unset: ", "not a valid identifier");
+	else if (code == LEXER_ERROR || code == LEXER_ERROR_FREE)
+		ft_perror2(NULL, "syntax error near unexpected token ", str);
+	else if (code == EXIT_ERROR)
+		ft_perror3(str, "exit: ", NULL);
+	else if (code == EXIT_ERROR2)
+		ft_perror3(str, "exit: ", "numeric argument required");
+}
+
+static void	error_printer(int code, char *str)
+{
+	if (code == MALLOC || code == EXECVE || code == CHDIR_ERROR || code ==
+		OPEN_ERROR || code == DUP_ERROR || code == PIPE_ERROR || code ==
+		FORK_ERROR || code == SIGNAL_ERROR || code == WAIT_ERROR)
 	{
 		g_error = 121;
 		ft_perror(str);
@@ -67,27 +89,16 @@ static void		error_printer(int code, char *str)
 		g_error = 126;
 		ft_perror2(NULL, str, "is a directory");
 	}
-	else if (code == HOME_NOT_SET)
-		ft_perror2(NULL, str, "HOME not set");
-	else if (code == OLDPWD_NOT_SET)
-		ft_perror2(NULL, str, "OLDPWD not set");
-	else if (code == EXPORT_ERROR)
-		ft_perror2(str, "export: ", "not a valid identifier");
-	else if (code == UNSET_ERROR)
-		ft_perror2(str, "unset: ", "not a valid identifier");
-	else if (code == LEXER_ERROR || code == LEXER_ERROR_FREE)
-		ft_perror2(NULL, "syntax error near unexpected token ", str);
-	else if (code == EXIT_ERROR)
-		ft_perror3(str, "exit: ", NULL);
-	else if (code == EXIT_ERROR2)
-		ft_perror3(str, "exit: ", "numeric argument required");
-} 
+	else
+		error_printer_ext(code, str);
+}
 
-int		error_handler(int code, char *str)
+int			error_handler(int code, char *str)
 {
 	error_printer(code, str);
 	if (code == HOME_NOT_SET || code == CHDIR_ERROR || code == EXPORT_ERROR
-	|| code == UNSET_ERROR || code == OLDPWD_NOT_SET || code == OPEN_ERROR || code == EXIT_ERROR || code == EXIT_ERROR2)
+	|| code == UNSET_ERROR || code == OLDPWD_NOT_SET || code == OPEN_ERROR
+	|| code == EXIT_ERROR || code == EXIT_ERROR2)
 	{
 		g_error = 1;
 		return (-1);

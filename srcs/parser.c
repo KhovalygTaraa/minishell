@@ -113,11 +113,8 @@ int			parser(t_cmd **cmd, char *line)
 		ft_free_2array((*cmd)->cmd);
 	if ((*cmd)->red)
 		ft_free_2array((*cmd)->red);
-	free(*cmd);
 	!p ? (p = line) : 0;
 	s = 0;
-	if (!(*cmd = (t_cmd *)malloc(sizeof(t_cmd))))
-		return (0);
 	ft_bzero(*cmd, sizeof(t_cmd));
 	while (1)
 	{

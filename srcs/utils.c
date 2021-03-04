@@ -65,19 +65,14 @@ char	**ft_stradd(char **array, char *str)
 		return (NULL);
 	i = 0;
 	if (array[0] != NULL)
-	{
 		while (array[i] != NULL)
 		{
 			new[i] = ft_strdup(array[i]);
 			i++;
 		}
-	}
 	if (!(new[i] = ft_strdup(str)))
 		return (NULL);
-	// free(str);
-	// new[i] = str;
 	new[i + 1] = NULL;
-	// free(array);
 	ft_free_2array(array);
 	return (new);
 }

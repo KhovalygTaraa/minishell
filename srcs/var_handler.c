@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char		*put_var(t_main *main, char *var, char **origin)
+static char	*put_var(t_main *main, char *var, char **origin)
 {
 	char	*res;
 	int		i;
@@ -22,7 +22,8 @@ static char		*put_var(t_main *main, char *var, char **origin)
 	i = 0;
 	a = -1;
 	res = NULL;
-	while ((var[i] >= 48 && var[i] <= 57) || (var[i] >= 65 && var[i] <= 90) || (var[i] >= 97 && var[i] <= 122) || var[i] == '?')
+	while ((var[i] >= 48 && var[i] <= 57) || (var[i] >= 65 && var[i] <= 90)
+		|| (var[i] >= 97 && var[i] <= 122) || var[i] == '?')
 		i++;
 	*origin = var + i;
 	if (!(var1 = ft_substr(var, 0, i)))
@@ -31,9 +32,8 @@ static char		*put_var(t_main *main, char *var, char **origin)
 		if (ft_strncmp(var1, main->env[a], i) == 0 && main->env[a][i] == '=')
 			if (!(res = ft_strdup(main->env[a] + i + 1)))
 				error_handler(MALLOC, "put_var");
-	if (ft_strcmp(var1, "?") == 0)
-		if (!(res = ft_itoa(g_error)))
-			error_handler(MALLOC, "put_var");
+	if (ft_strcmp(var1, "?") == 0 && !(res = ft_itoa(g_error)))
+		error_handler(MALLOC, "put_var");
 	free(var1);
 	if (res == NULL)
 		res = ft_strdup("");
@@ -41,7 +41,13 @@ static char		*put_var(t_main *main, char *var, char **origin)
 	return (res);
 }
 
-static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
+static void	var_seeker_ext(const int *a, int *b, char **origin)
+{
+	*b += *a + 1;
+	*origin += *a + 1;
+}
+
+static char	**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 {
 	int		a;
 	int		b;
@@ -49,28 +55,27 @@ static char		**var_seeker(t_main *main, char *dollar, char *origin, char **res)
 	char	*clean;
 
 	b = 0;
-	a = 0;
 	while ((a = ft_strchr_index(origin, '$')) != INT_MAX)
-	{
-		b = b + a + 2;
 		if (origin[++a] == 1)
 		{
-			if (!(res = ft_stradd(res, (clean = ft_substr(dollar, 0, b - 2)))))
+			b = b + a + 1;
+			clean = ft_substr(dollar, 0, b - 2);
+			if (!(res = ft_stradd(res, clean)))
 				error_handler(MALLOC, "var_seeker");
 			free(clean);
-			if (!(res = ft_stradd(res, (clean = put_var(main, origin + a + 1, &tmp)))))
+			if (!(res = ft_stradd(res,
+				(clean = put_var(main, origin + a + 1, &tmp)))))
 				error_handler(MALLOC, "var_seeker");
 			free(clean);
 			origin = tmp;
 			dollar = tmp;
 		}
 		else
-			origin = origin + a + 1;
-	}
+			var_seeker_ext(&a, &b, &origin);
 	return (res);
 }
 
-static void		replace_cmd(char **str, char **new_str)
+static void	replace_cmd(char **str, char **new_str)
 {
 	int		i;
 	char	*res;
@@ -88,7 +93,7 @@ static void		replace_cmd(char **str, char **new_str)
 	*str = res;
 }
 
-int		var_handler(t_main *main, char **src, int a)
+int			var_handler(t_main *main, char **src, int a)
 {
 	int		i;
 	char	**res;
