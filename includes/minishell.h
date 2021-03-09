@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 21:28:32 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/09 22:27:07 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	ft_perror(const char *str);
 int		error_handler(int code, char *str);
 void	ignore_squit(int code);
 void	ignore_sint(int code);
-void	quit_child(int code);
-void	kill_child(int code);
+void	ignore_squit2(int code);
+void	ignore_sint2(int code);
 char	**ft_2arraydup(char **array);
 char	**ft_stradd(char **array, char *str);
 int		ft_strchr_index(const char *s, int c);

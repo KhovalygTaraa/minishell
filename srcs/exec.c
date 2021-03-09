@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 04:11:33 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/09 22:36:23 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,36 @@ static void		exec_absolute_path(t_main *main, t_cmd *cmd)
 		error_handler(EXECVE, path);
 }
 
+static void		wait_child(void)
+{
+	int		status;
+
+	if (signal(SIGQUIT, ignore_squit2) == SIG_ERR)
+		error_handler(SIGNAL_ERROR, "exec");
+	if (signal(SIGINT, ignore_sint2) == SIG_ERR)
+		error_handler(SIGNAL_ERROR, "exec");
+	if (wait(&status) == -1)
+		error_handler(WAIT_ERROR, "exec");
+	if (WIFEXITED(status) != 0)
+		g_error = WEXITSTATUS(status);
+	if (WIFSIGNALED(status) != 0)
+	{
+		if (WTERMSIG(status) == 2)
+			ft_putchar_fd('\n', 1);
+		if (WTERMSIG(status) == 3)
+			ft_putendl_fd("Quit: 3", 1);
+	}
+}
+
 void			exec(t_main *main, t_cmd *cmd)
 {
 	int		i;
-	int		status;
 
 	if ((g_pid = fork()) == 0)
 	{
-		i = exec_bin_path(main, cmd);
+		i = exec_relative_path(main, cmd);
 		if (i == -1)
-			i = exec_relative_path(main, cmd);
+			i = exec_bin_path(main, cmd);
 		if (i == -1)
 			exec_absolute_path(main, cmd);
 	}
@@ -92,13 +112,6 @@ void			exec(t_main *main, t_cmd *cmd)
 		error_handler(FORK_ERROR, "exec");
 	else
 	{
-		if (signal(SIGQUIT, quit_child) == SIG_ERR)
-			error_handler(SIGNAL_ERROR, "exec");
-		if (signal(SIGINT, kill_child) == SIG_ERR)
-			error_handler(SIGNAL_ERROR, "exec");
-		if (wait(&status) == -1)
-			error_handler(WAIT_ERROR, "exec");
-		if (WIFEXITED(status) != 0)
-			g_error = WEXITSTATUS(status);
+		wait_child();
 	}
 }

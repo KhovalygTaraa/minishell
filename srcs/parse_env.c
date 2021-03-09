@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 17:00:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 05:08:34 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/09 20:33:12 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static int	parse_pwd(t_main *main)
 	int		i;
 	char	*path_line;
 
+	path_line = NULL;
 	i = 0;
 	while (main->env[i] != NULL)
 	{
@@ -48,6 +49,8 @@ static int	parse_pwd(t_main *main)
 			path_line = main->env[i] + 4;
 		i++;
 	}
+	if (path_line == NULL)
+		return (0);
 	if (!(path_line = ft_strjoin(path_line, "/")))
 		error_handler(MALLOC, "parse_path");
 	main->pwd = path_line;
@@ -86,9 +89,20 @@ static int	parse_path(t_main *main)
 int			parse_env(t_main *main)
 {
 	if (main->path != NULL)
+	{
 		ft_free_2array(main->path);
-	free(main->pwd);
-	free(main->home);
+		main->path = NULL;
+	}
+	if (main->pwd)
+	{
+		free(main->pwd);
+		main->pwd = NULL;
+	}
+	if (main->home)
+	{
+		free(main->home);
+		main->home = NULL;
+	}
 	parse_path(main);
 	parse_pwd(main);
 	parse_home(main);
