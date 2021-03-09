@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:43:38 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 05:00:55 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 00:44:50 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ static void	error_printer(int code, char *str)
 	{
 		g_error = 127;
 		ft_perror2(NULL, str, ": command not found");
+	}
+	else if (code == STAT + 1)
+	{
+		g_error = 127;
+		ft_perror(str);
 	}
 	else if (code == STAT_DIR)
 	{

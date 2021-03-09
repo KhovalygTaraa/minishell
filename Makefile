@@ -27,6 +27,7 @@ SRC_NAME		=	main.c \
 					exec_pwd.c \
 					exec_unset.c \
 					utils.c \
+					utils2.c \
 					error_handler.c \
 					var_handler.c \
 					signal.c \

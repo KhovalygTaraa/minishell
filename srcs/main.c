@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/09 20:26:14 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 00:22:05 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	init(t_main *main, char **env, int argc, char **argv)
 	ft_bzero(main, sizeof(t_main));
 	if (!(main->env = ft_2arraydup(env)))
 		error_handler(MALLOC, "init");
+	shell_lvl(main);
 	if (!(main->stdout = dup(1)))
 		error_handler(DUP_ERROR, "init2");
 	if (!(main->stdin = dup(0)))

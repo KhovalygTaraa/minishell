@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/09 22:36:23 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 00:42:59 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static void		exec_absolute_path(t_main *main, t_cmd *cmd)
 	{
 		if (S_ISDIR(buf.st_mode))
 			error_handler(STAT_DIR, path);
+		else if (!main->path)
+			error_handler(STAT + 1, path);
 		else
 			error_handler(STAT, path);
 	}
