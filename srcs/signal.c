@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 19:15:00 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 21:20:31 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/09 19:25:19 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ignore_squit(int code)
 void	ignore_sint(int code)
 {
 	(void)code;
+	g_error = 1;
 	write(1, "\b\b  \b\b\n", 7);
 }
 

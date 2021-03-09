@@ -22,10 +22,21 @@ static int	step(char **p, int flag)
 	}
 	if (((**p == '\'' || **p == '\"' || **p == '|' || **p == ';' || **p == '$'
 		|| **p == '<' || **p == '>' || **p == ' ' || **p == '\0')
-			&& !(flag & 1) && !(flag & 2))
+		&& !(flag & 1) && !(flag & 2))
 		|| ((flag & 1) && **p == '\'')
 		|| ((flag & 2) && (**p == '\"' || **p == '$')))
-		return (1);
+	{
+		if (**p == '$')
+		{
+			if (('a' < *(*p + 1) && *(*p + 1) < 'z') || ('A' < *(*p + 1) &&
+				*(*p + 1) < 'Z') || *(*p + 1) == '_' || *(*p + 1) == '?')
+				return (1);
+			else
+				return (0);
+		}
+		else
+			return (1);
+	}
 	return (0);
 }
 
@@ -36,12 +47,16 @@ static void	quote_handler(char **s, char **p)
 	if (**p == '\'')
 	{
 		++*p;
+		if (**p == '\'')
+			put(s, 2);
 		while (**p != '\'')
 			put(s, *(*p)++);
 		++*p;
 	}
 	else if (*(*p)++ == '\"')
 	{
+		if (**p == '\"')
+			put(s, 2);
 		while (!(type = step(p, 2)) || **p != '\"')
 		{
 			put(s, *(*p)++);
@@ -117,7 +132,6 @@ int			parser(t_cmd **cmd, char *line)
 	s = 0;
 	ft_bzero(*cmd, sizeof(t_cmd));
 	while (1)
-	{
 		if (step(&p, 0))
 		{
 			type = parser_switch(&s, &p, cmd);
@@ -128,5 +142,4 @@ int			parser(t_cmd **cmd, char *line)
 		}
 		else
 			put(&s, *p++);
-	}
 }

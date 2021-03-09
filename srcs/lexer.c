@@ -49,7 +49,8 @@ static int	conflicts(char **p, char **cur, int *n)
 		return (error_handler(LEXER_ERROR, "`;;\'"));
 	if (**p == ';' && (!*cur && !*n))
 		return (error_handler(LEXER_ERROR, "`;\'"));
-	if ((**p == '|' || **p == ';') && (*cur && **cur != '\'' && **cur != '\"'))
+	if ((**p == '|' || **p == ';') && (*cur && **cur != '\'' && **cur != '\"')
+		&& !*n)
 		return (error_handler(LEXER_ERROR_FREE, cpy(*p)));
 	if (*cur && (**cur == '>' || **cur == '<')
 		&& (**p == '<' || (**p == '>' && *(*p + 1) != '>')) && !*n)

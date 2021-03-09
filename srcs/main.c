@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 23:43:05 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/09 19:26:17 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static void	minishell_ext(t_main **main, char **line)
 	while (i != 0)
 	{
 		parse_env(*main);
-		// if (lexer(*line) == -1)
-			// break ;
+		if (lexer(*line) == -1)
+			break ;
 		i = parser(&(*main)->cmd, *line);
 		if ((*main)->cmd->red)
 			parse_redir(*main);

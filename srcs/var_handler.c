@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 02:00:35 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/09 19:20:20 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static char	*put_var(t_main *main, char *var, char **origin)
 				error_handler(MALLOC, "put_var");
 	if (ft_strcmp(var1, "?") == 0 && !(res = ft_itoa(g_error)))
 		error_handler(MALLOC, "put_var");
+	g_error = 0;
 	free(var1);
 	if (res == NULL)
 		res = ft_strdup("");
