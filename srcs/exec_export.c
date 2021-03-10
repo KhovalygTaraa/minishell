@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:40:35 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/04 01:34:01 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 19:05:03 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ static int		add_vars(t_main *main, t_cmd *cmd)
 	{
 		flag = 0;
 		if (!ft_isalpha(cmd->cmd[i][0]) && cmd->cmd[i][0] != '_')
+			flag = error_handler(EXPORT_ERROR, cmd->cmd[i]);
+		else if (is_valid(cmd->cmd[i]) == 0)
 			flag = error_handler(EXPORT_ERROR, cmd->cmd[i]);
 		else if (ft_strncmp(cmd->cmd[i], "_=", 2) != 0 && flag == 0)
 		{

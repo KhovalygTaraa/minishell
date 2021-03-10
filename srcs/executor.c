@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 15:52:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 01:32:54 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 19:38:27 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int			executor(t_main *main)
 		red_maker(main, main->cmd);
 	if (ispipe == 1)
 	{
-		ispipe = 0;
+		ispipe = 3;
 		if (main->is_stdin_taken == 0)
 			dup2(main->fildes[0], 0);
 		close(main->fildes[1]);
@@ -136,7 +136,7 @@ int			executor(t_main *main)
 		if (main->is_stdout_taken == 0)
 			dup2(main->fildes[1], 1);
 	}
-	if (main->cmd->pipe == 1 || ispipe == 0)
+	if (main->cmd->pipe == 1 || ispipe == 3)
 		if (check_non_pipe_cmd(main->cmd->cmd) == 0)
 				flag = 1;
 	if (main->cmd->cmd && flag == 0)

@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 16:48:47 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 19:30:16 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ static char	*get_line(int *fildes, int i)
 static void	minishell_ext(t_main **main, char **line)
 {
 	int		i;
-	int		a;
 
-	a = 0;
 	i = 1;
 	while (i != 0)
 	{
