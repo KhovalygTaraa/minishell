@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 00:22:05 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 16:48:47 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*get_line(int *fildes, int i)
 	{
 		signal(SIGINT, SIG_DFL);
 		close(fildes[0]);
-		if ((get_next_line(0, &line)) <= 0)
+		if ((get_next_line(1, &line)) <= 0)
 			exit(0);
 		ft_putendl_fd(line, fildes[1]);
 		close(fildes[1]);
@@ -72,7 +72,9 @@ static char	*get_line(int *fildes, int i)
 static void	minishell_ext(t_main **main, char **line)
 {
 	int		i;
+	int		a;
 
+	a = 0;
 	i = 1;
 	while (i != 0)
 	{
@@ -87,7 +89,13 @@ static void	minishell_ext(t_main **main, char **line)
 		if ((*main)->cmd->red)
 			var_handler(*main, (*main)->cmd->red, 0);
 		if ((*main)->cmd)
+		{
+			(*main)->is_stdout_taken = 0;
+			(*main)->is_stdin_taken = 0;
 			executor(*main);
+			dup2((*main)->stdout, 1);
+			dup2((*main)->stdin, 0);
+		}
 	}
 }
 

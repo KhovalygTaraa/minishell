@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 22:55:23 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 00:29:15 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 01:29:50 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,13 @@ void	shell_lvl(t_main *main)
 		}
 		i++;
 	}
+}
+
+int		check_non_pipe_cmd(char **cmd)
+{
+	if (ft_strcmp(cmd[0], "export") == 0 || ft_strcmp(cmd[0], "unset") == 0)
+		return (0);
+	if (ft_strcmp(cmd[0], "exit") == 0 || ft_strcmp(cmd[0], "cd") == 0)
+		return (0);
+	return (1);
 }

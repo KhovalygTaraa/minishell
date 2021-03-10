@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/09 23:20:59 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 01:26:31 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ void	put(char **s, char c);
 void	push(char ***cmd, char **s);
 int		terminate_handler(char **s, char **p, t_cmd **cmd);
 void	shell_lvl(t_main *main);
-void	shell_name(t_main *main);
+int		check_non_pipe_cmd(char **cmd);
 
 #endif

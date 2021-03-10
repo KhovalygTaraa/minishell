@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 09:52:43 by hovalygta         #+#    #+#             */
-/*   Updated: 2021/02/14 17:59:34 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 16:51:54 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	reader(int fd, char *buffer, char **line)
 		if (i == 0 && *line[0] != '\0')
 		{
 			write(1, "  \b\b", 4);
+			write(1, "\n\b", 2);
 			continue ;
 		}
 		else if (i == 0 && *line[0] == '\0')
