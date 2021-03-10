@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 19:12:03 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 23:07:27 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		parse_env(t_main *main);
 int		parse_redir(t_main *main);
 int		executor(t_main *main);
 int		exec_cd(t_main *main, t_cmd *cmd);
-void	exec_echo(t_main *main, t_cmd *cmd);
+void	exec_echo(t_cmd *cmd);
 void	exec_env(t_main *main, t_cmd *cmd);
 void	exec_exit(t_main *main, t_cmd *cmd);
 int		exec_export(t_main *main, t_cmd *cmd);
