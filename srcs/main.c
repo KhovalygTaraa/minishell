@@ -6,10 +6,11 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 19:30:16 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/10 20:13:25 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// последняя версия
 #include <minishell.h>
 
 static void	init(t_main *main, char **env, int argc, char **argv)
