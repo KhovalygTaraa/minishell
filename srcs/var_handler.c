@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/09 22:35:21 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/11 03:53:05 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,55 @@ static char	*put_var(t_main *main, char *var, char **origin)
 	free(var1);
 	if (res == NULL)
 		res = ft_strdup("");
-	res = ft_strjoin_free(res, var + i);
 	return (res);
 }
 
-static void	var_seeker_ext(const int *a, int *b, char **origin)
+static char	*var_seeker_ext(const int *a, int *b, char **origin, int i)
 {
-	*b += *a + 1;
-	*origin += *a + 1;
+	char	*dollar;
+
+	dollar = NULL;
+	if (i == 1)
+	{
+		*b += *a + 1;
+		*origin += *a + 1;
+	}
+	else
+	{
+		dollar = ft_strdup(*origin);
+		if (dollar[0] == '$')
+			dollar[0] = '\0';
+	}
+	return (dollar);
 }
 
-static char	**var_seeker(t_main *main, char *dollar, char *origin, char **res)
+static char	**var_seeker(t_main *main, char *dollar, char *or, char **res)
 {
 	int		a;
 	int		b;
 	char	*tmp;
-	char	*clean;
+	char	*c;
 
 	b = 0;
-	while ((a = ft_strchr_index(origin, '$')) != INT_MAX)
-		if (origin[++a] == 1)
+	while ((a = ft_strchr_index(or, '$')) != INT_MAX)
+		if (or[++a] == 1)
 		{
 			b = b + a + 1;
-			clean = ft_substr(dollar, 0, b - 2);
-			if (!(res = ft_stradd(res, clean)))
+			c = ft_substr(dollar, 0, b - 2);
+			free(dollar);
+			if (!(res = ft_stradd(res, c)))
 				error_handler(MALLOC, "var_seeker");
-			free(clean);
-			if (!(res = ft_stradd(res,
-				(clean = put_var(main, origin + a + 1, &tmp)))))
+			free(c);
+			co= put_var(main, or + a + 1, &tmp);
+			if (!(res = ft_stradd(res, c)))
 				error_handler(MALLOC, "var_seeker");
-			g_error = 0;
-			free(clean);
-			origin = tmp;
-			dollar = tmp;
+			free(c);
+			or = tmp;
+			dollar = var_seeker_ext(&a, &b, &tmp, 2);
 		}
 		else
-			var_seeker_ext(&a, &b, &origin);
+			var_seeker_ext(&a, &b, &or, 1);
+	free(dollar);
 	return (res);
 }
 
@@ -107,7 +120,8 @@ int			var_handler(t_main *main, char **src, int a)
 			error_handler(MALLOC, "var_handler");
 		tmp = ft_strdup(src[i]);
 		res[0] = NULL;
-		res = var_seeker(main, tmp, tmp, res);
+		res = var_seeker(main, ft_strdup(tmp), tmp, res);
+		g_error = 0;
 		free(tmp);
 		if (res[0] != NULL)
 		{

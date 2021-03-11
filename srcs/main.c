@@ -6,11 +6,10 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 12:59:25 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 22:06:15 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/11 03:43:04 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// последняя версия
 #include <minishell.h>
 
 static void	init(t_main *main, char **env, int argc, char **argv)
@@ -36,10 +35,6 @@ static void	init(t_main *main, char **env, int argc, char **argv)
 	g_error = 0;
 	g_pid = 0;
 }
-
-/*
-** lsof -c - для проверки утечки файловых дескрипторов
-*/
 
 static char	*get_line(int *fildes, int i)
 {

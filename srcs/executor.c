@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 15:52:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 23:07:51 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/11 03:45:03 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int			executor(t_main *main)
 	}
 	if (main->cmd->pipe == 1 || ispipe == 3)
 		if (check_non_pipe_cmd(main->cmd->cmd) == 0)
-				flag = 1;
+			flag = 1;
 	if (main->cmd->cmd && flag == 0)
 		cmd_selector(main, main->cmd);
 	if (ispipe == 3)
