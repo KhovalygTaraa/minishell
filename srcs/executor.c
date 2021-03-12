@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/23 15:52:49 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/11 03:45:03 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/11 04:04:21 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ static int	red_maker(t_main *main, t_cmd *cmd)
 	int		i;
 	int		res;
 
+	if (!cmd->red)
+		return (0);
 	i = 0;
 	res = 0;
 	main->relink_fd = -1;
@@ -114,14 +116,13 @@ static int	red_maker(t_main *main, t_cmd *cmd)
 ** fd, если в аргументах команды есть > или >>.
 */
 
-int			executor(t_main *main)
+void		executor(t_main *main)
 {
 	static int	ispipe;
 	int			flag;
 
 	flag = 0;
-	if (main->cmd->red)
-		red_maker(main, main->cmd);
+	red_maker(main, main->cmd);
 	if (ispipe == 1)
 	{
 		ispipe = 3;
@@ -136,12 +137,10 @@ int			executor(t_main *main)
 		if (main->is_stdout_taken == 0)
 			dup2(main->fildes[1], 1);
 	}
-	if (main->cmd->pipe == 1 || ispipe == 3)
-		if (check_non_pipe_cmd(main->cmd->cmd) == 0)
-			flag = 1;
+	if ((main->cmd->pipe == 1 || ispipe == 3) && c(main->cmd->cmd) == 0)
+		flag = 1;
 	if (main->cmd->cmd && flag == 0)
 		cmd_selector(main, main->cmd);
 	if (ispipe == 3)
 		ispipe = 0;
-	return (1);
 }

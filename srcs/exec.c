@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 19:14:11 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 19:37:44 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:51:15 by hovalygta        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void		exec_absolute_path(t_main *main, t_cmd *cmd)
 		else
 			error_handler(STAT, path);
 	}
-	if (execve(path, ++cmd->cmd, main->env) == -1)
+	if (execve(path, cmd->cmd++, main->env) == -1)
 		error_handler(EXECVE, path);
 }
 

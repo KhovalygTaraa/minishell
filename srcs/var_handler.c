@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 19:25:34 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/11 03:53:05 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/12 12:50:40 by hovalygta        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*var_seeker_ext(const int *a, int *b, char **origin, int i)
 	return (dollar);
 }
 
-static char	**var_seeker(t_main *main, char *dollar, char *or, char **res)
+static void	var_seeker(t_main *main, char *dollar, char *or, char ***res)
 {
 	int		a;
 	int		b;
@@ -73,11 +73,11 @@ static char	**var_seeker(t_main *main, char *dollar, char *or, char **res)
 			b = b + a + 1;
 			c = ft_substr(dollar, 0, b - 2);
 			free(dollar);
-			if (!(res = ft_stradd(res, c)))
+			if (!(*res = ft_stradd(*res, c)))
 				error_handler(MALLOC, "var_seeker");
 			free(c);
-			co= put_var(main, or + a + 1, &tmp);
-			if (!(res = ft_stradd(res, c)))
+			c = put_var(main, or + a + 1, &tmp);
+			if (!(*res = ft_stradd(*res, c)))
 				error_handler(MALLOC, "var_seeker");
 			free(c);
 			or = tmp;
@@ -86,7 +86,6 @@ static char	**var_seeker(t_main *main, char *dollar, char *or, char **res)
 		else
 			var_seeker_ext(&a, &b, &or, 1);
 	free(dollar);
-	return (res);
 }
 
 static void	replace_cmd(char **str, char **new_str)
@@ -120,8 +119,7 @@ int			var_handler(t_main *main, char **src, int a)
 			error_handler(MALLOC, "var_handler");
 		tmp = ft_strdup(src[i]);
 		res[0] = NULL;
-		res = var_seeker(main, ft_strdup(tmp), tmp, res);
-		g_error = 0;
+		var_seeker(main, ft_strdup(tmp), tmp, &res);
 		free(tmp);
 		if (res[0] != NULL)
 		{
@@ -133,5 +131,6 @@ int			var_handler(t_main *main, char **src, int a)
 		else
 			ft_free_2array(res);
 	}
+	g_error = 0;
 	return (0);
 }

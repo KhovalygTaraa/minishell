@@ -6,7 +6,7 @@
 /*   By: swquinc <swquinc@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 22:34:42 by swquinc           #+#    #+#             */
-/*   Updated: 2021/03/10 23:07:27 by swquinc          ###   ########.fr       */
+/*   Updated: 2021/03/11 04:10:20 by swquinc          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		parser(t_cmd **cmd, char *line);
 int		lexer(char *line);
 int		parse_env(t_main *main);
 int		parse_redir(t_main *main);
-int		executor(t_main *main);
+void	executor(t_main *main);
 int		exec_cd(t_main *main, t_cmd *cmd);
 void	exec_echo(t_cmd *cmd);
 void	exec_env(t_main *main, t_cmd *cmd);
@@ -53,7 +53,7 @@ void	put(char **s, char c);
 void	push(char ***cmd, char **s);
 int		terminate_handler(char **s, char **p, t_cmd **cmd);
 void	shell_lvl(t_main *main);
-int		check_non_pipe_cmd(char **cmd);
+int		c(char **cmd);
 int		is_valid(char *str);
 
 #endif
