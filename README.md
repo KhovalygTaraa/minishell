@@ -5,4 +5,4 @@ It's serious training project on C language. This is my first team projects. The
 3) Environment variables handler - in this part we search matches with environment variables names in the string, if we found this, we replace this with environment variable value.
 4) Executor - in this part we execute our commands, if command is not builtin we call execve().
 5) Signal part - in this part we code signals from keyboard (ctrl-C, ctrl-D and ctrl-\).
-6) Error handler - simple error handler part, error must be line in bash.
+6) Error handler - simple error handler part, error must be like in bash.
